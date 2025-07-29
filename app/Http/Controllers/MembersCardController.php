@@ -84,6 +84,7 @@ class MembersCardController extends Controller
                         "cnic_passport" => $member->cnic_passport,
                         "blood_group" => $member->blood_group,
                         "emergency_contact" => $member->emergency_contact,
+                        "emergency_contact_code" => $member->emergency_contact_code,
                         "date_of_issue" => $member->date_of_issue,
                         "validity" => $member->validity,
                         "profile_picture" => $member->profile_picture
@@ -105,6 +106,7 @@ class MembersCardController extends Controller
                         "cnic_passport" => $member->cnic,
                         "blood_group" => $member->blood_group,
                         "emergency_contact" => $member->member->emergency_contact,
+                        "emergency_contact_code" => $member->emergency_contact_code,
                         "date_of_issue" => $member->date_of_issue,
                         "validity" => $member->validity,
                         "profile_picture" => $member->picture
@@ -127,6 +129,7 @@ class MembersCardController extends Controller
                         "cnic_passport" => $member->cnic,
                         "blood_group" => $member->blood_group,
                         "emergency_contact" => $member->member->emergency_contact,
+                        "emergency_contact_code" => $member->emergency_contact_code,
                         "date_of_issue" => $member->date_of_issue,
                         "validity" => $member->validity,
                         "profile_picture" => $member->profile_pic
