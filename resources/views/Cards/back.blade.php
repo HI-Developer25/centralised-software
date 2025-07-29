@@ -169,7 +169,7 @@
                                                 </tr>
                                                 <tr class="members_info">
                                                     <td>Emergency No:</td>
-                                                    <td>{{ $member["emergency_contact_code"] ?? "" . str_replace("+", "+" . $member['emergency_contact_code'], $member["emergency_contact"]) }}</td>
+                                                    <td>{{ $member["emergency_contact"] }}</td>
                                                 </tr>
                                                 <tr class="members_info">
                                                     <td>Date of Issue:</td>
