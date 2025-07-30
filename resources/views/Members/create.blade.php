@@ -222,7 +222,7 @@
               </div>
             </div>
             <div v-show="current_step === 4" class="step-form px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
-              <h5 style="margin-bottom: 20px;" class="dark:text-gray-200">Children Information</h5>
+              <h5 style="margin-bottom: 20px;" class="dark:text-gray-200">Spouse Information</h5>
               <div class="spouse" v-for="(spouse, index) in spouses" :key="spouse.id">
                 <div style="margin-bottom: 20px; display: flex; justify-content: space-between;" class="spouse-dropdown border border-gray-600 p-3 rounded-md dark:text-gray-200">
                   <h5 @click="spouse.hidden = !spouse.hidden" v-text="`${numberToOrdinal(index + 1)} Spouse Information`"></h5>
