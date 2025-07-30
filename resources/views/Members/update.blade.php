@@ -543,7 +543,8 @@
                 <label class="block text-sm" style="margin-bottom: 20px; width: 50%">
                   <span class="text-gray-700 dark:text-gray-400">Blood Group</span>
                   <select v-model="blood_group" data-message="marital_field_message" class="step_1 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
-                    <option value="a+">A+</option>
+                    <option value="-">-</option>
+                      <option value="a+">A+</option>
                     <option value="a-">A-</option>
                     <option value="b+">B+</option>
                     <option value="b-">B-</option>
