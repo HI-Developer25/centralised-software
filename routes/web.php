@@ -40,6 +40,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 
+Route::get("old/data", function() {
+    dd("old data"); 
+});
+
 Route::get("sheets", function() {
     Member::chunk(500, function ($members) {
         foreach ($members as $member) {
