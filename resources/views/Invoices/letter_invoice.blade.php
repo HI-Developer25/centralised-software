@@ -177,15 +177,43 @@ h2{
 <table class="table-bordered table mt-2" style="border: 1px solid #000 !important;">
     <tr>
         <td>Spouse Name</td>
-        <td style="width: 30%;">{{ optional($introletter->member->spouses)[0] ? $introletter->member->spouses[0]->spouse_name : 'N/A' }}</td>
+        @if(optional($introletter->member->spouses)[0])
+            <td style="width: 30%;">{{  $introletter->member->spouses[0]->spouse_name }}</td>
+        @elseif(isset($member) && $member["spouse_name"])
+            <td style="width: 30%;">{{  $member["spouse_name"] }}</td>
+        @else
+            <td style="width: 30%">N/A</td>
+        @endif
+        
         <td>Second Spouse Name</td>
-        <td style="width: 30%;">{{ optional($introletter->member->spouses)[1] ? $introletter->member->spouses[1]->spouse_name : 'N/A' }}</td>
+        @if(optional($introletter->member->spouses)[1])
+            <td style="width: 30%;">{{  $introletter->member->spouses[1]->spouse_name }}</td>
+        @elseif(isset($member) && $member["second_spouse"])
+            <td style="width: 30%;">{{  $member["second_spouse"] }}</td>
+        @else
+            <td style="width: 30%">N/A</td>
+        @endif
     </tr> 
     <tr>
         <td >Third Spouse Name</td>
-        <td style="width: 30%;">{{ optional($introletter->member->spouses)[2] ? $introletter->member->spouses[2]->spouse_name : 'N/A' }}</td>
+        
+        @if(optional($introletter->member->spouses)[2])
+            <td style="width: 30%;">{{  $introletter->member->spouses[2]->spouse_name }}</td>
+        @elseif(isset($member) && $member["third_spouse"])
+            <td style="width: 30%;">{{  $member["third_spouse"] }}</td>
+        @else
+            <td style="width: 30%">N/A</td>
+        @endif
+        
         <td>Fourth Spouse Name</td>
-        <td style="width: 30%;">{{ optional($introletter->member->spouses)[3] ? $introletter->member->spouses[3]->spouse_name : 'N/A' }}</td>
+        
+        @if(optional($introletter->member->spouses)[3])
+            <td style="width: 30%;">{{  $introletter->member->spouses[3]->spouse_name }}</td>
+        @elseif(isset($member) && $member["fourth_spouse"])
+            <td style="width: 30%;">{{  $member["fourth_spouse"] }}</td>
+        @else
+            <td style="width: 30%">N/A</td>
+        @endif
     </tr> 
     
 </table>
