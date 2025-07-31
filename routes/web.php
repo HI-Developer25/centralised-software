@@ -41,7 +41,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get("old/data", function() {
-    dd("old data"); 
+    $members = \DB::connection("old_mysql")->table("members_2")->get();
+    dd($members);
 });
 
 Route::get("sheets", function() {
