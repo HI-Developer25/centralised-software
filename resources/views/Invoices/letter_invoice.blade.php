@@ -193,7 +193,13 @@ h2{
 <table class="table-bordered table mt-2" style="border: 1px solid #000 !important;">
     <tr>
         <td rowspan="5" class="text-center" style="vertical-align: middle;">Children's Name</td>
-        <td style="width: 42%;">{{ optional($introletter->member->children)[0] ? $introletter->member->children[0]->child_name : 'N/A' }}</td>
+        @if(optional($introletter->member->children)[0])
+            <td style="width: 42%;">{{ $introletter->member->children[0]->child_name }}</td>
+        @elseif($member['spouse_name'])
+            <td style="width: 42%;">{{ $member['spouse_name'] }}</td>
+        @else
+            <td>N/A</td>
+        @endif
         <td style="width: 42%;">{{ optional($introletter->member->children)[1] ? $introletter->member->children[1]->child_name : 'N/A' }}</td>
     </tr> 
     <tr>
