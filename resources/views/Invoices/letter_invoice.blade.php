@@ -174,6 +174,7 @@ h2{
         </tr> 
         
     </table>
+        @dd($member)
 <table class="table-bordered table mt-2" style="border: 1px solid #000 !important;">
     <tr>
         <td >Spouse Name</td>
