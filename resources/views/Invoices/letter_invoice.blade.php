@@ -188,8 +188,8 @@ h2{
         <td>Second Spouse Name</td>
         @if(optional($introletter->member->spouses)[1])
             <td style="width: 30%;">{{  $introletter->member->spouses[1]->spouse_name }}</td>
-        @elseif(isset($member) && $member->second_spouse)
-            <td style="width: 30%;">{{  $member->second_spouse }}</td>
+        @elseif(isset($member) && $member->second_spouse_name)
+            <td style="width: 30%;">{{  $member->second_spouse_name }}</td>
         @else
             <td style="width: 30%">N/A</td>
         @endif
@@ -199,8 +199,8 @@ h2{
         
         @if(optional($introletter->member->spouses)[2])
             <td style="width: 30%;">{{  $introletter->member->spouses[2]->spouse_name }}</td>
-        @elseif(isset($member) && $member->third_spouse)
-            <td style="width: 30%;">{{  $member->third_spouse }}</td>
+        @elseif(isset($member) && $member->third_spouse_name)
+            <td style="width: 30%;">{{  $member->third_spouse_name }}</td>
         @else
             <td style="width: 30%">N/A</td>
         @endif
@@ -209,8 +209,8 @@ h2{
         
         @if(optional($introletter->member->spouses)[3])
             <td style="width: 30%;">{{  $introletter->member->spouses[3]->spouse_name }}</td>
-        @elseif(isset($member) && $member->fourth_spouse)
-            <td style="width: 30%;">{{  $member->fourth_spouse }}</td>
+        @elseif(isset($member) && $member->fourth_spouse_name)
+            <td style="width: 30%;">{{  $member->fourth_spouse_name }}</td>
         @else
             <td style="width: 30%">N/A</td>
         @endif
