@@ -39,12 +39,6 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
-
-Route::get("old/data", function() {
-    $members = \DB::connection("old_mysql")->table("members_2")->get();
-    dd($members);
-});
-
 Route::get("sheets", function() {
     Member::chunk(500, function ($members) {
         foreach ($members as $member) {
