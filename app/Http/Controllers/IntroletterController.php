@@ -11,6 +11,7 @@ class IntroletterController extends Controller
         return view("Introletter.index");
     }
     public function invoice(Introletter $introletter) {
+        dd($introletter);
         return view("Invoices.letter_invoice", compact("introletter"));
     }
 }
