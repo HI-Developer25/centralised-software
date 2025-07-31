@@ -174,10 +174,9 @@ h2{
         </tr> 
         
     </table>
-        @dd($member)
 <table class="table-bordered table mt-2" style="border: 1px solid #000 !important;">
     <tr>
-        <td >Spouse Name</td>
+        <td>Spouse Name</td>
         <td style="width: 30%;">{{ optional($introletter->member->spouses)[0] ? $introletter->member->spouses[0]->spouse_name : 'N/A' }}</td>
         <td>Second Spouse Name</td>
         <td style="width: 30%;">{{ optional($introletter->member->spouses)[1] ? $introletter->member->spouses[1]->spouse_name : 'N/A' }}</td>
@@ -194,38 +193,12 @@ h2{
 <table class="table-bordered table mt-2" style="border: 1px solid #000 !important;">
     <tr>
         <td rowspan="5" class="text-center" style="vertical-align: middle;">Children's Name</td>
-        @if(optional($introletter->member->children)[0])
-            <td style="width: 42%;">{{ $introletter->member->children[0]->child_name }}</td>
-        @elseif($member['spouse_name'])
-            <td style="width: 42%;">{{ $member['spouse_name'] }}</td>
-        @else
-            <td style="width: 42%">N/A</td>
-        @endif
-
-        @if(optional($introletter->member->children)[1])
-            <td style="width: 42%;">{{ $introletter->member->children[1]->child_name }}</td>
-        @elseif($member['second_spouse_name'])
-            <td style="width: 42%;">{{ $member['second_spouse_name'] }}</td>
-        @else
-            <td style="width: 42%">N/A</td>
-        @endif
+        <td style="width: 42%;">{{ optional($introletter->member->children)[0] ? $introletter->member->children[0]->child_name : 'N/A' }}</td>
+        <td style="width: 42%;">{{ optional($introletter->member->children)[1] ? $introletter->member->children[1]->child_name : 'N/A' }}</td>
     </tr> 
     <tr>
-        @if(optional($introletter->member->children)[2])
-            <td style="width: 42%;">{{ $introletter->member->children[2]->child_name }}</td>
-        @elseif($member['third_spouse_name'])
-            <td style="width: 42%;">{{ $member['third_spouse_name'] }}</td>
-        @else
-            <td style="width: 42%">N/A</td>
-        @endif
-       
-        @if(optional($introletter->member->children)[3])
-            <td style="width: 42%;">{{ $introletter->member->children[3]->child_name }}</td>
-        @elseif($member['fourth_spouse_name'])
-            <td style="width: 42%;">{{ $member['fourth_spouse_name'] }}</td>
-        @else
-            <td style="width: 42%">N/A</td>
-        @endif 
+        <td style="width: 40%;">{{ optional($introletter->member->children)[2] ? $introletter->member->children[2]->child_name : 'N/A' }}</td>
+        <td style="width: 40%;">{{ optional($introletter->member->children)[3] ? $introletter->member->children[3]->child_name : 'N/A' }}</td>
     </tr>
     <tr>
     <td style="width: 40%;">{{ optional($introletter->member->children)[4] ? $introletter->member->children[4]->child_name : 'N/A' }}</td>
