@@ -11,7 +11,9 @@ class IntroletterController extends Controller
         return view("Introletter.index");
     }
     public function invoice(Introletter $introletter) {
-        dd($introletter->member);
-        return view("Invoices.letter_invoice", compact("introletter"));
+       $file_number = $introletter->member->file_number;
+       $member = \DB::connection("old_mysql")->table("members_2")->firstWhere("file_no", $file_number);
+         dd($member);
+       return view("Invoices.letter_invoice", compact("introletter"));
     }
 }
