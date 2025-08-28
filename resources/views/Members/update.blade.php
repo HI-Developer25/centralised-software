@@ -222,7 +222,7 @@
               </div>
             </div>
             <div v-show="current_step === 4" class="step-form px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
-              <h5 style="margin-bottom: 20px;" class="dark:text-gray-200">Children Information</h5>
+              <h5 style="margin-bottom: 20px;" class="dark:text-gray-200">Spouse Information</h5>
               <div class="spouse" v-for="(spouse, index) in spouses" :key="spouse.id">
                 <div style="margin-bottom: 20px; display: flex; justify-content: space-between;" class="spouse-dropdown border border-gray-600 p-3 rounded-md dark:text-gray-200">
                   <h5 @click="spouse.hidden = !spouse.hidden" v-text="`${numberToOrdinal(index + 1)} Spouse Information`"></h5>
@@ -543,7 +543,8 @@
                 <label class="block text-sm" style="margin-bottom: 20px; width: 50%">
                   <span class="text-gray-700 dark:text-gray-400">Blood Group</span>
                   <select v-model="blood_group" data-message="marital_field_message" class="step_1 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
-                    <option value="a+">A+</option>
+                    <option value="-">-</option>
+                      <option value="a+">A+</option>
                     <option value="a-">A-</option>
                     <option value="b+">B+</option>
                     <option value="b-">B-</option>
