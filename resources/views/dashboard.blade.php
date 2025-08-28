@@ -46,7 +46,7 @@
                     Most Joined Club
                   </p>
                   <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                    {{ $famous_club->club_name }}
+                    {{ $famous_club?->club_name ?? "N/A" }}
                   </p>
                 </div>
               </div>
@@ -62,7 +62,7 @@
                     Recent Member
                   </p>
                   <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                    {{ $recent_member->member_name }}
+                    {{ $recent_member?->member_name ?? "N/A" }}
                   </p>
                 </div>
               </div>

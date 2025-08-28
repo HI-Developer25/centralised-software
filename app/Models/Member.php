@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Http\Requests\MemberRequest;
 use App\Jobs\CreateFamilySheet;
 use App\Jobs\SaveInGoogleDrive;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
@@ -29,6 +30,13 @@ class Member extends Model
     public function children() {
         return $this->hasMany(Child::class);
     }
+    public function thirtyPlusChildren() {
+        return $this->hasMany(Child::class)->whereDate(
+            "date_of_birth", 
+            "<=",
+            Carbon::now()->subYears(30)
+        );
+    }
     public function membership() {
         return $this->belongsTo(CardType::class, "membership_type");
     }
@@ -37,6 +45,7 @@ class Member extends Model
     }
     public function scopeFilter($query) {
         $keyword = request()->keyword;
+        
         $query->where(function ($q) use ($keyword) {
             $q->whereHas('children', function ($qc) use ($keyword) {
                 $qc->whereLike('child_name', "%$keyword%");
