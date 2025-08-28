@@ -87,6 +87,13 @@ id="navbar-app"
                 </a>
               </li>
             </template>
+            <li
+              class="navbar member_birthdays px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 {{ request()->routeIs('member.birthdays') ? 'text-black' : '' }}"
+            >
+              <a class="w-full" style="font-size: 12px;" href="{{ route('temp.member.index') }}">
+                Temp Member
+              </a>
+            </li>
             </ul>
           </template>
         </li>
