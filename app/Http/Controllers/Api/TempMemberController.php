@@ -21,6 +21,6 @@ class TempMemberController extends Controller
             );
         })->paginate($count);
         
-        return ThirtyPlusMemberResource::collection($members);
+        return [ThirtyPlusMemberResource::collection($members), $members->total()];
     }
 }
