@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Jobs\CreateFamilySheet;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,16 @@ class Child extends Model
 
     public function membership() {
         return $this->belongsTo(CardType::class, "membership_id");
+    }
+
+    protected static function booted() {
+        static::created(function($data) {
+            dispatch(new CreateFamilySheet($this->member));
+        });
+
+        static::updated(function($data) {
+            dispatch(new CreateFamilySheet($this->member));
+        });
     }
 
     public function scopeThirtyPlus(Builder $query) {
