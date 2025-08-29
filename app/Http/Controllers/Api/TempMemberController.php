@@ -16,7 +16,7 @@ class TempMemberController extends Controller
             $query->whereDate(
                 "date_of_birth",
                 "<=",
-                Carbon::now()->subYears(29)
+                Carbon::now()->subYears(30)
             );
         })->paginate(15);
         
