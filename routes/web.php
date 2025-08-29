@@ -236,10 +236,10 @@ Route::get('/import-child', function () {
                     $dob = null;
                     try {
                         Carbon::useStrictMode(); // fail on invalid dates
-                        $dob = Carbon::createFromFormat('j/n/Y', trim($rawDob));
+                        $dob = Carbon::createFromFormat('n/j/Y', trim($rawDob));
                     } catch (\Throwable $e) {
                         try {
-                            $dob = Carbon::createFromFormat('d/m/Y', trim($rawDob));
+                            $dob = Carbon::createFromFormat('m/d/Y', trim($rawDob));
                         } catch (\Throwable $e2) {
                             // Could log here and skip
                             continue;
