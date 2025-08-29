@@ -20,11 +20,11 @@ class Child extends Model
 
     protected static function booted() {
         static::created(function($data) {
-            dispatch(new CreateFamilySheet($this->member));
+            dispatch(new CreateFamilySheet($data->member));
         });
 
         static::updated(function($data) {
-            dispatch(new CreateFamilySheet($this->member));
+            dispatch(new CreateFamilySheet($data->member));
         });
     }
 
