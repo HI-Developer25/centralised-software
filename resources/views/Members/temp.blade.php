@@ -67,7 +67,7 @@
           <option value="60">60</option>
         </select>
       </div>
-      <p v-text="`${tempMembers.length} Total Children`"></p>
+      <p v-if="!is_fetching" v-text="`${tempMembers.length} Total Children`"></p>
     
  
       <table v-if="tempMembers.length > 0 && !is_fetching" class="w-full whitespace-no-wrap">
