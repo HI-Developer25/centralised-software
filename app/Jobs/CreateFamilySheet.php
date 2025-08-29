@@ -27,6 +27,8 @@ class CreateFamilySheet implements ShouldQueue
      */
     public function handle(): void
     {
+        $this->member->has_receipt_created = false;
+        $this->member->save();
         $pdf = Pdf::loadView("Invoices.member_tree", [ "member" => $this->member ])
     ->setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
     ->setPaper("A4", "portrait");
