@@ -22,12 +22,12 @@
             <th class="px-4 py-3">Member Name</th>
             <th class="px-4 py-3">Membership Number</th>
             <th class="px-4 py-3">Birthdate</th>
-            <th class="px-4 py-3">Email</th>
+            <th class="px-4 py-3">Residential Address</th>
             <th class="px-4 py-3">Phone Number</th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-          <tr v-for="member in members" class="text-gray-700 dark:text-gray-400">
+          <tr v-for="member in sortedMembers" class="text-gray-700 dark:text-gray-400">
             <td class="px-4 py-3">
               <div class="flex items-center text-sm">
                 <!-- Avatar with inset shadow -->
@@ -43,8 +43,10 @@
             </td>
             <td class="px-4 py-3 text-sm" v-text="member.membership_number"></td>
             <td class="px-4 py-3 text-sm" v-text="formatDate(member.date_of_birth)"></td>
-            <td class="px-4 py-3 text-xs" v-text="member.email_address"></td>
-            <td class="px-4 py-3 text-sm" v-text="member.phone_number"></td>
+            <td class="px-4 py-3 text-xs break-words max-w-[200px]"
+              v-html="member.residential_address.replace(/(.{80})/g, '$1<br>')">
+            </td>
+            <td class="px-4 py-3 text-sm" v-text="member.phone_number.replace(/^\+/, '+' + member.phone_number_code)"></td>
           </tr>
         </tbody>
       </table>
@@ -98,6 +100,13 @@
         search(newValue) {
           this.getContent(route("api.member.birthday", { keyword: newValue }));
         },
+      },
+      computed: {
+        sortedMembers() {
+          return this.members.slice().sort((a, b) => {
+            return new Date(a.dob) - new Date(b.dob); // Ascending
+          });
+        }
       },
       methods: {
         formatDate(date) {

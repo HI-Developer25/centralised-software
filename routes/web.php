@@ -38,7 +38,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\TempMemberController;
 
 Route::get("sheets", function() {
     Member::chunk(500, function ($members) {
@@ -211,7 +211,7 @@ Route::get("/users", [UserController::class, "index"])->name("users");
 Route::get("/user/create", [UserController::class, "create"])->name("user.create");
 Route::get("/user/{user}/update", [UserController::class, "update"])->name("user.update");
 
-
+Route::get("/temp-members", [TempMemberController::class, "index"])->name("temp.member.index");
 
 
 

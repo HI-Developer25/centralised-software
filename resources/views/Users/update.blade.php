@@ -1,5 +1,5 @@
 <x-layout.app>
-    <main class="h-full pb-16" id="app">
+    <main class="h-full pb-16" id="app" style="overflow: scroll;">
         <div class="container px-6 mx-auto grid">
             <h2 class="mt-6 mb-3 text-2xl font-semibold text-gray-700 dark:text-gray-200">Create User</h2>
           <form @submit="submit">
@@ -240,6 +240,42 @@
       </tr>
     </tbody>
   </table>
+
+  
+    <thead>
+      <tr>
+        <th colspan="100%" style="text-align: left;"><h2>Payment Methods</h2></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 10px 50px 10px 0px;">
+          <label style="display: flex; column-gap: 10px;">
+            <input type="checkbox" value="payment:actions" v-model="permissions" class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" />
+            <p style="font-size: 12px;">Give privilege to perform actions on Payment Methods</p>
+          </label>
+        </td> 
+      </tr>
+    </tbody>
+
+    
+      <thead>
+      <tr>
+        <th colspan="100%" style="text-align: left;"><h2>Graphs</h2></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 10px 50px 10px 0px;">
+          <label style="display: flex; column-gap: 10px;">
+            <input type="checkbox" value="show:graph" v-model="permissions" class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" />
+            <p style="font-size: 12px;">Ability to show graphs</p>
+          </label>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
 </div>
 
   <button style="margin-top: 30px;" class="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">

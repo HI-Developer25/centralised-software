@@ -26,7 +26,10 @@ class MemberRequest extends FormRequest
             "form_fee" => (int) str_replace(',', '', $this->form_fee ?? '0'),
             "processing_fee" => (int) str_replace(',', '', $this->processing_fee ?? '0'),
             "first_payment" => (int) str_replace(',', '', $this->first_payment ?? '0'),
-            "total_installment" => (int) str_replace(',', '', $this->total_installment ?? '0')
+            "total_installment" => (int) str_replace(',', '', $this->total_installment ?? '0'),
+            "company_name" => $this->company_name ?? "N/A",
+            "company_designation" => $this->company_designation ?? "N/A",
+            "profession" => $this->profession ?? "N/A"
         ]);
     }
     public function rules(): array
@@ -62,9 +65,9 @@ class MemberRequest extends FormRequest
             "payment_status" => [ "required" ],
             "locker_category" => [ "required" ],
             "locker_number" => [ "required" ],
-            "company_name" => [ "required" ],
-            "company_designation" => [ "required" ],
-            "profession" => [ "required" ]
+            "company_name" => [ "nullable", "string" ],
+            "company_designation" => [ "nullable", "string" ],
+            "profession" => [ "nullable", "string" ]
         ];
     }
     public function withValidator($validator) {

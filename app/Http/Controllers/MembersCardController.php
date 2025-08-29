@@ -25,7 +25,7 @@ class MembersCardController extends Controller
                         "card_color" => $member->membership->card_color, 
                         "shade_color" => $member->membership->shade_color,
                         "card_type" => $member->card_type,
-                        "card_name" => $member->membership->card_name,
+                        "card_name" => $member->membership->display_name,
                         "member_name" => $member->member_name
                     ]
                 );
@@ -40,7 +40,7 @@ class MembersCardController extends Controller
                         "card_color" => $member->member->membership->card_color,
                         "shade_color" => $member->member->membership->shade_color,
                         "card_type" => $member->member->card_type,
-                        "card_name" => $member->member->membership->card_name,
+                        "card_name" => $member->member->membership->display_name,
                         "member_name" => $member->spouse_name
                     ]);
                 } else {
@@ -55,7 +55,7 @@ class MembersCardController extends Controller
                         "card_color" => $card->card_color,
                         "shade_color" => $card->shade_color,
                         "card_type" => $member->member->card_type,
-                        "card_name" => $card->card_name,
+                        "card_name" => $card->display_name,
                         "member_name" => $member->child_name
                     ]);
                 }
@@ -79,11 +79,12 @@ class MembersCardController extends Controller
                         "card_color" => $member->membership->card_color, 
                         "shade_color" => $member->membership->shade_color,
                         "card_type" => $member->card_type,
-                        "card_name" => $member->membership->card_name,
+                        "card_name" => $member->membership->display_name,
                         "member_name" => $member->member_name,
                         "cnic_passport" => $member->cnic_passport,
                         "blood_group" => $member->blood_group,
                         "emergency_contact" => $member->emergency_contact,
+                        "emergency_contact_code" => $member->emergency_contact_code,
                         "date_of_issue" => $member->date_of_issue,
                         "validity" => $member->validity,
                         "profile_picture" => $member->profile_picture
@@ -100,11 +101,13 @@ class MembersCardController extends Controller
                         "card_color" => $member->member->membership->card_color,
                         "shade_color" => $member->member->membership->shade_color,
                         "card_type" => $member->member->card_type,
-                        "card_name" => $member->member->membership->card_name,
+                        "card_name" => $member->member->membership->display_name,
                         "member_name" => $member->spouse_name,
                         "cnic_passport" => $member->cnic,
                         "blood_group" => $member->blood_group,
                         "emergency_contact" => $member->member->emergency_contact,
+                        "emergency_contact_code" => $member->emergency_contact_code,
+                        "emergency_contact_code" => $member->member->emergency_contact_code,
                         "date_of_issue" => $member->date_of_issue,
                         "validity" => $member->validity,
                         "profile_picture" => $member->picture
@@ -122,11 +125,13 @@ class MembersCardController extends Controller
                         "card_color" => $card->card_color,
                         "shade_color" => $card->shade_color,
                         "card_type" => $member->member->card_type,
-                        "card_name" => $card->card_name,
+                        "card_name" => $card->display_name,
                         "member_name" => $member->child_name,
                         "cnic_passport" => $member->cnic,
                         "blood_group" => $member->blood_group,
                         "emergency_contact" => $member->member->emergency_contact,
+                        "emergency_contact_code" => $member->emergency_contact_code,
+                        "emergency_contact_code" => $member->member->emergency_contact_code,
                         "date_of_issue" => $member->date_of_issue,
                         "validity" => $member->validity,
                         "profile_picture" => $member->profile_pic
@@ -135,7 +140,7 @@ class MembersCardController extends Controller
             }   
         }
         $member_collection = $member_collection->chunk(2)->map(fn($chunk) => $chunk->reverse())->flatten(1);
-                            
+        
         return view("Cards.back", compact("member_collection"));
     }
 }

@@ -153,7 +153,7 @@ footer{
 }
 
     </style>
-    <div id="app" class="container px-6 mx-auto grid">
+    <div id="app" class="container px-6 mx-auto grid" stlye="overflow: auto;">
         <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Recovery Report</h2>
         <div style="display: flex; column-gap: 10px;">
             

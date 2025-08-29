@@ -18,4 +18,16 @@ class CardType extends Model
         return $query;
     }
 
+    public function members() {
+        return $this->hasMany(Member::class, "membership_type");
+    }
+
+    public function spouses() {
+        return $this->hasMany(Spouse::class, "member_id");
+    }
+
+    public function children() {
+        return $this->hasMany(Child::class, "member_id");
+    }
+
 }

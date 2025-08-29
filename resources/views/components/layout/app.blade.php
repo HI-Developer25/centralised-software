@@ -30,7 +30,12 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/choices.js/1.1.6/styles/css/choices.min.css" integrity="sha512-/PTsSsk4pRsdHtqWjRuAL/TkYUFfOpdB5QDb6OltImgFcmd/2ZkEhW/PTQSayBKQtzjQODP9+IAeKd7S2yTXtA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   
     <style>
       body {
         overflow-y: scroll;
@@ -45,7 +50,7 @@
         display: inline-block;
         box-sizing: border-box;
         animation: rotation 1s linear infinite;
-        }
+      }
 
         @keyframes rotation {
         0% {
@@ -95,8 +100,7 @@
     <style>
             
       .hide {
-        
-      animation: hide 0.3s forwards;
+        animation: hide 0.3s forwards;
       }
       .hideNavbar {
         animation: hideNavbar 0.3s forwards;

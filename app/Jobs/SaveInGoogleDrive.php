@@ -52,6 +52,7 @@ class SaveInGoogleDrive implements ShouldQueue
         $spreadsheet = new Google_Service_Sheets_Spreadsheet([
             'properties' => ['title' => 'Laravel Members Export - ' . now()->toDateTimeString()]
         ]);
+        
         $spreadsheetId = null;
         if(!$setting) {
             $spreadsheet = $sheets->spreadsheets->create($spreadsheet);
@@ -149,7 +150,7 @@ class SaveInGoogleDrive implements ShouldQueue
         $permission = new Google_Service_Drive_Permission([
             'type' => 'user',
             'role' => 'writer', // use 'reader' if you only want to view
-            'emailAddress' => 'habbas21219@gmail.com' 
+            'emailAddress' => 'backup290125@gmail.com' 
         ]);
         $driveService->permissions->create($spreadsheetId, $permission);
 

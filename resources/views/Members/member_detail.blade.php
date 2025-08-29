@@ -26,12 +26,8 @@
           <h1 style="font-size: 20px; font-weight: bold;" class="editable" data-editable="member_name" data-type="text">{{ $member->member_name }}</h1>
           <input type="hidden" id="member_name" value="{{ $member->member_name }}"/>
           <p style="margin-bottom: 5px; font-size: 13px; font-style: italic;">{{ $member->membership->card_name }} Membership</p>
-          @if($member->membership_status === "regular")
-            <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-green-900 dark:text-green-300 p-1 px-2 rounded-md">Regular</span>
-          @else
-            <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-red-900 dark:text-red-300 p-1 px-2 rounded-md">{{ $member->membership_status }}</span>
-          @endif
-        </div>
+          <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-green-900 dark:text-green-300 p-1 px-2 rounded-md">{{ $member->payment_status }}</span>
+          </div>
       </div>
       <div class="container px-6 mx-auto" style="margin-top: 50px; display: flex; column-gap: 40px;">
               <!-- Sidebar Tabs -->
@@ -107,7 +103,7 @@
             </span>
             <input type="hidden" id="cnic_passport" value="{{ $member->cnic_passport }}"/>
             </p>
-          <p style="margin-top: 10px;"><span style="display: inline-block; width: 200px;">City/Country:</span> {{ $member->city_country }}</p>
+          <p style="margin-top: 10px;"><span style="display: inline-block; width: 200px;">City/Country:</span> {{ $member->country }}/{{ $member->city }}</p>
           <p style="margin-top: 10px;"><span style="display: inline-block; width: 200px;">Blood Group:</span> 
             <span style="text-transform: uppercase;" class="editable" data-editable="blood_group" data-type="text">{{ $member->blood_group }}</span>
             <select id="blood_group" style="display: none;">

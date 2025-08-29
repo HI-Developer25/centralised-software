@@ -46,7 +46,7 @@
                     Most Joined Club
                   </p>
                   <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                    {{ $famous_club->club_name }}
+                    {{ $famous_club?->club_name ?? "N/A" }}
                   </p>
                 </div>
               </div>
@@ -62,12 +62,167 @@
                     Recent Member
                   </p>
                   <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                    {{ $recent_member->member_name }}
+                    {{ $recent_member?->member_name ?? "N/A" }}
                   </p>
+                </div>
+              </div>
+            </div>
+           <div class="grid gap-6 mb-8 md:grid-cols-2">
+              <div class="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                <h4 class="mb-4 font-semibold text-gray-800 dark:text-gray-300">
+                  Membership Data
+                </h4>
+                <canvas id="pie" width="466" height="232" style="display: block; height: 155px; width: 311px;" class="chartjs-render-monitor"></canvas>
+                <div class="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400">
+                  <!-- Chart legend -->
+                </div>
+              </div>
+              <div class="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                <h4 class="mb-4 font-semibold text-gray-800 dark:text-gray-300">
+                  Installments Collection of {{ now()->year }}
+                </h4>
+                <canvas id="line" width="466" height="232" style="display: block; height: 155px; width: 311px;" class="chartjs-render-monitor"></canvas>
+                <div class="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400">
+                  <!-- Chart legend -->
+                  <div class="flex items-center">
+                    <span class="inline-block w-3 h-3 mr-1 bg-teal-600 rounded-full"></span>
+                    <span>Installment Paid</span>
+                  </div>
+                  <div class="flex items-center">
+                    <span class="inline-block w-3 h-3 mr-1 bg-purple-600 rounded-full"></span>
+                    <span>Installment To Be Paid</span>
+                  </div>
                 </div>
               </div>
             </div>
         </div>
     </main>
+    <script defer>
+      /**
+ * For usage, visit Chart.js docs https://www.chartjs.org/docs/latest/
+ */
+const lineConfig = {
+  type: 'line',
+  data: {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', "August", "September", "October", "November", "December"],
+    datasets: [
+      {
+        label: 'Installment Paid',
+        /**
+         * These colors come from Tailwind CSS palette
+         * https://tailwindcss.com/docs/customizing-colors/#default-color-palette
+         */
+        backgroundColor: '#0694a2',
+        borderColor: '#0694a2',
+        data: @json($currentYearRecoverySheetPaid->pluck("paid")->toArray()),
+        fill: false,
+      },
+      {
+        label: 'Installments To Be Paid',
+        fill: false,
+        /**
+         * These colors come from Tailwind CSS palette
+         * https://tailwindcss.com/docs/customizing-colors/#default-color-palette
+         */
+        backgroundColor: '#7e3af2',
+        borderColor: '#7e3af2',
+        data: @json($currentYearRecoverySheetPayable->pluck("payable")->toArray()),
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    /**
+     * Default legends are ugly and impossible to style.
+     * See examples in charts.html to add your own legends
+     *  */
+    legend: {
+      display: false,
+    },
+    tooltips: {
+      mode: 'index',
+      intersect: false,
+    },
+    hover: {
+      mode: 'nearest',
+      intersect: true,
+    },
+    scales: {
+      x: {
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Month',
+        },
+      },
+      y: {
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Value',
+        },
+      },
+    },
+  },
+}
 
+// change this to the id of your chart element in HMTL
+const lineCtx = document.getElementById('line')
+window.myLine = new Chart(lineCtx, lineConfig)
+    </script>
+         <script defer>
+          const colorMap = {
+            "Corporate": "#4e79a7",     // Blue
+            "Permanent +": "#f28e2b",   // Orange
+            "Founder": "#e15759",       // Red
+            "Child": "#76b7b2",         // Teal
+            "Household": "#59a14f",     // Green
+            "Permanent SE": "#edc948",  // Yellow
+            "Temporary": "#b07aa1",     // Purple
+            "Incomplete": "#ff9da7",    // Pink
+            "Honorary": "#9c755f",      // Brown
+            "Permanent": "#bab0ac"      // Gray
+          }
+
+          const memberships = @json($memberships->pluck("card_name"));
+          const counts = [];
+          const members_count = @json($memberships->pluck("members_count"));
+          const spouses_count = @json($memberships->pluck("spouses_count"));
+          const children_count = @json($memberships->pluck("children_count"));
+          
+          members_count.forEach((count, index) => {
+            counts[index] = members_count[index] + spouses_count[index] + children_count[index];
+          });
+
+          membership_colors = memberships.map(membership => colorMap[membership]);
+
+      /**
+       * For usage, visit Chart.js docs https://www.chartjs.org/docs/latest/
+       */
+      const pieConfig = {
+        type: 'doughnut',
+        data: {
+          labels: [...memberships],
+          datasets: [
+            {
+              data: [...counts],
+              backgroundColor: [...membership_colors],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          cutoutPercentage: 80,
+
+          legend: {
+            display: false,
+          },
+        },
+      }
+
+      // change this to the id of your chart element in HMTL
+      const pieCtx = document.getElementById('pie')
+      window.myPie = new Chart(pieCtx, pieConfig);
+
+    </script>
 </x-layout.app>

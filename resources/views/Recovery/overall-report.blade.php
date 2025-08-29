@@ -125,7 +125,7 @@ footer{
     </style>
     <script src=
 "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.min.js"></script>
-    <div id="app" class="container px-6 mx-auto grid">
+    <div id="app" class="container px-6 mx-auto grid" style="overflow: auto;">
         <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Recovery Report</h2>
         <div style="display: flex; column-gap: 10px;">
             
@@ -171,17 +171,17 @@ footer{
                         </tr>
                     </thead>
                     <tbody>
-                            <tr style="font-size:13px;" v-for="(report, index) in reports" :key="report.id">
-                                <td v-text="report.year" style="padding: 10px;"></td>
-                                <td v-text="months[report.month_num - 1]" style="padding: 10px;"></td>
-                                <td v-text="Number(report.total_current_month_payable).toLocaleString()" style="padding: 10px;"></td>
-                                <td v-text="Number(report.total_paid).toLocaleString()" style="padding: 10px;"></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="font-weight: bold; padding: 10px; font-size: 13px;">Grand Totals</td>
-                                <td style="font-size: 13px; padding: 10px;" v-text="total_current_month_payable"></td>
-                                <td style="font-size: 13px; padding: 10px;" v-text="Number(total_paid).toLocaleString()"></td>
-                            </tr>
+                        <tr style="font-size:13px;" v-for="(report, index) in reports" :key="report.id">
+                            <td v-text="report.year" style="padding: 10px;"></td>
+                            <td v-text="months[report.month_num - 1]" style="padding: 10px;"></td>
+                            <td v-text="Number(report.total_current_month_payable).toLocaleString()" style="padding: 10px;"></td>
+                            <td v-text="Number(report.total_paid).toLocaleString()" style="padding: 10px;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="font-weight: bold; padding: 10px; font-size: 13px;">Grand Totals</td>
+                            <td style="font-size: 13px; padding: 10px;" v-text="total_current_month_payable"></td>
+                            <td style="font-size: 13px; padding: 10px;" v-text="Number(total_paid).toLocaleString()"></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

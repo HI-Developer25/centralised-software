@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BirthdayController;
 use App\Http\Controllers\Api\CardTypeController;
 use App\Http\Controllers\Api\ChildController;
+use App\Http\Controllers\Api\ChildToggleController;
 use App\Http\Controllers\Api\ClubController;
 use App\Http\Controllers\Api\ComplainController;
 use App\Http\Controllers\Api\ComplainQuestionController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\Api\FamilySheetController;
 use App\Http\Controllers\Api\IntroletterController;
 use App\Http\Controllers\Api\MemberController;
 use App\Http\Controllers\Api\MembershipController;
+use App\Http\Controllers\Api\ParentToggleController;
 use App\Http\Controllers\Api\PaymentMethodController;
 use App\Http\Controllers\Api\ReceiptController;
 use App\Http\Controllers\Api\RecoveryController;
@@ -30,6 +32,9 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\TempMemberController;
+
+Route::get("/temp-members", [TempMemberController::class, "index"])->name("api.temp.member.index");
 
 Route::patch("/member/{member}/patch", function(Member $member) {
     // return request()->file("attribute");
@@ -204,6 +209,7 @@ Route::get("/check-token", [TokenController::class, "check"])->name("api.token.c
 
 Route::get("/user", [TokenController::class, "check_token"])->name("api.token.check-user");
 
+
 Route::get("/otp/{user:username}/create", [\App\Http\Controllers\Api\Auth\AuthController::class, "otp"])->name("api.otp");
 Route::get("/otp/{user:username}/check", [\App\Http\Controllers\Api\Auth\AuthController::class, "verifyOtp"])->name("api.otp.verify");
 Route::post("/login", [\App\Http\Controllers\Api\Auth\AuthController::class, "login"])->name("api.login");
@@ -211,6 +217,8 @@ Route::post("/logout", [\App\Http\Controllers\Api\Auth\AuthController::class, "l
 
 Route::get("/{membership}/get", [MembershipController::class, "getByMembershipName"])->name("api.membership.get");
 
+Route::patch("/temp-members/{child}/toggle-converted", [ChildToggleController::class, "toggleConversion"])->name("api.temp.member.toggle.converted");
+Route::patch("/temp-members/{member}/toggle-contacted", [ParentToggleController::class, "toggleContacted"])->name("api.temp.member.toggle.contacted");
 
 Route::get("/member/{member}/sheet", [FamilySheetController::class, "get"])->name("download.family-sheet");
 
