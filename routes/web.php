@@ -192,6 +192,11 @@ Route::get("/member/receipt", [ReceiptController::class, "create"])->name("membe
 Route::get("/member/receipts", [ReceiptController::class, "get"])->name("member.recovery.receipts.get");
 Route::get("/member/{receipt}/receipt", [ReceiptController::class, "update"])->name("member.recovery.receipt.update");
 
+Route::get("/import-child", function() {
+    $members = DB::connection("old_mysql")->table("members_2")->get();
+    dd($members);
+});
+
 Route::get("/member/{member}/get", [MemberController::class, "getDetails"])->name("member.get");
 
 Route::get("/payment-methods", [PaymentMethodController::class, "index"])->name("payment_method.index");
