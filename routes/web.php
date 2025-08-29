@@ -194,7 +194,9 @@ Route::get("/member/{receipt}/receipt", [ReceiptController::class, "update"])->n
 
 Route::get("/import-child", function() {
     $members = DB::connection("old_mysql")->table("members_2")->get();
-    dd($members);
+    foreach($members as $member) {
+        dd($member);
+    }
 });
 
 Route::get("/member/{member}/get", [MemberController::class, "getDetails"])->name("member.get");
