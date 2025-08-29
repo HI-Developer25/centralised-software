@@ -275,6 +275,7 @@ Route::get('/import-child', function () {
         });
 });
 
+
 Route::get("/member/{member}/get", [MemberController::class, "getDetails"])->name("member.get");
 
 Route::get("/payment-methods", [PaymentMethodController::class, "index"])->name("payment_method.index");
