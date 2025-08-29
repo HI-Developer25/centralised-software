@@ -67,7 +67,7 @@
           <option value="60">60</option>
         </select>
       </div>
-      <p v-text="`${tempMembers.length} Total Children`"></p>
+      <p v-text="`${total} Total Children`"></p>
     
  
       <table v-if="tempMembers.length > 0 && !is_fetching" class="w-full whitespace-no-wrap">
@@ -210,6 +210,7 @@
         return {
           tempMembers: [],
           links: [],
+          total: 0,
           search: "",
           count: 30,
           is_fetching: true
@@ -237,6 +238,7 @@
             const response = await axios.get(url);
             console.log(response);
             this.tempMembers = response.data.data;
+            this.total = response.data.total;
             // Initialize expanded property for each member
             this.tempMembers.forEach(member => {
               member.expanded = false;
