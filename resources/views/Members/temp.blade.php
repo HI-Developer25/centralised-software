@@ -220,7 +220,10 @@
       },
       watch: {
         search(newValue) {
-          this.getContent(route("api.temp.member.index", { keyword: newValue }));
+          this.getContent(route("api.temp.member.index", { keyword: newValue, count: this.count }));
+        },
+        count(newValue) {
+          this.getContent(route('api.temp.member.index', { keyword: this.keyword, count: newValue }))
         }
       },
       methods: {

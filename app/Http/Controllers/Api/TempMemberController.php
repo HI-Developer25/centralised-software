@@ -12,13 +12,14 @@ use App\Models\Child;
 class TempMemberController extends Controller
 {
     public function index() {
+        $count = request()->count ?? 30;
         $members = Member::filter()->whereHas("children", function($query) {
             $query->whereDate(
                 "date_of_birth",
                 "<=",
                 Carbon::now()->subYears(30)
             );
-        })->paginate(30);
+        })->paginate($count);
         
         return ThirtyPlusMemberResource::collection($members);
     }
