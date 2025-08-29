@@ -67,10 +67,10 @@
           <option value="60">60</option>
         </select>
       </div>
-      <p v-if="!is_fetching" style="margin-top: 20px;" v-text="`${tempMembers[1]} Total Children`"></p>
+      <p v-text="`${tempMembers.length} Total Children`"></p>
     
  
-      <table v-if="tempMembers[0].length > 0 && !is_fetching" class="w-full whitespace-no-wrap">
+      <table v-if="tempMembers.length > 0 && !is_fetching" class="w-full whitespace-no-wrap">
                  <thead>
            <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
              <th class="px-4 py-3">Member Name</th>
@@ -82,7 +82,7 @@
            </tr>
          </thead>
         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-          <template v-for="member in tempMembers[0]" :key="member.id">
+          <template v-for="member in tempMembers" :key="member.id">
             <!-- Parent Row -->
                          <tr @click="toggleMemberExpansion(member.id)" class="text-gray-700 dark:text-gray-400 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                                                                                                            <td class="px-4 py-3">
