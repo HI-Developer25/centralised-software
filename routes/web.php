@@ -193,86 +193,144 @@ Route::get("/member/receipt", [ReceiptController::class, "create"])->name("membe
 Route::get("/member/receipts", [ReceiptController::class, "get"])->name("member.recovery.receipts.get");
 Route::get("/member/{receipt}/receipt", [ReceiptController::class, "update"])->name("member.recovery.receipt.update");
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
+
 Route::get('/import-child', function () {
-    // process in chunks to avoid memory blowups on big tables
     DB::connection('old_mysql')
         ->table('members_2')
         ->orderBy('id')
         ->chunk(100, function ($members) {
 
-            // constant data outside loops
             $placeholders = ['first','second','third','fourth','fifth','sixth','seventh','eight','nineth','tenth'];
             $memberships  = ['child' => 10, 'household' => 6];
             $defaultMembership = 16;
 
-            foreach ($members as $member) {
-                $member_from_new_db = Member::where('file_number', trim($member->file_no ?? ''))->first();
+            foreach ($members as $legacy) {
 
-                // Guard: if no matching member, skip safely
-                if (!$member_from_new_db) {
+                // Find target member
+                $target = Member::where('file_number', trim($legacy->file_no ?? ''))->first();
+                if (!$target) {
+                    Log::warning('Import skipped: target member not found', [
+                        'legacy_id' => $legacy->id ?? null,
+                        'file_no'   => $legacy->file_no ?? null,
+                    ]);
                     continue;
                 }
 
-                // If member already has ANY child, skip whole import for this member (your current behavior)
-                if ($member_from_new_db->children()->exists()) {
+                // Skip if they already have children (as per current behavior)
+                if ($target->children()->exists()) {
+                    Log::info('Import skipped: member already has children', [
+                        'member_id' => $target->id,
+                        'file_no'   => $legacy->file_no ?? null,
+                    ]);
                     continue;
                 }
 
-                foreach ($placeholders as $placeholder) {
-                    $childNameKey = $placeholder . '_child_name';
-                    $childDobKey  = $placeholder . '_child_dob';
+                // Wrap the WHOLE member in a transaction
+                DB::beginTransaction();
+                $errors = [];
+                $toInsert = [];
 
-                    $name = $member->{$childNameKey} ?? null;
-                    $rawDob = $member->{$childDobKey} ?? null;
+                try {
+                    // Validate & stage data FIRST (no DB writes yet)
+                    Carbon::useStrictMode(); // invalid dates throw
 
-                    // Skip if either missing/blank
-                    if (empty(trim((string)$name)) || empty(trim((string)$rawDob))) {
+                    foreach ($placeholders as $p) {
+                        $nameKey = $p . '_child_name';
+                        $dobKey  = $p . '_child_dob';
+
+                        $name = $legacy->{$nameKey} ?? null;
+                        $rawDob = $legacy->{$dobKey} ?? null;
+
+                        // Skip if either missing/blank (not a "failure", just ignore)
+                        if (empty(trim((string)$name)) || empty(trim((string)$rawDob))) {
+                            continue;
+                        }
+
+                        // Parse DOB (support non-padded and padded)
+                        try {
+                            $dob = Carbon::createFromFormat('j/n/Y', trim($rawDob));
+                        } catch (\Throwable $e1) {
+                            try {
+                                $dob = Carbon::createFromFormat('d/m/Y', trim($rawDob));
+                            } catch (\Throwable $e2) {
+                                $errors[] = "Invalid DOB '{$rawDob}' for child '{$name}'";
+                                continue;
+                            }
+                        }
+
+                        // Compute membership by age
+                        $age = $dob->diffInYears(now());
+                        $membershipId = $defaultMembership;      // >= 30
+                        if ($age < 18)       $membershipId = $memberships['child'];
+                        elseif ($age < 30)   $membershipId = $memberships['household'];
+
+                        $toInsert[] = [
+                            'cnic'           => '-',
+                            'child_name'     => $name,
+                            'date_of_birth'  => $dob->format('Y-m-d'),
+                            'date_of_issue'  => now(),
+                            'validity'       => now(),
+                            'profile_pic'    => 'profile_pictures/default-user.png',
+                            'membership_id'  => $membershipId,
+                            'blood_group'    => '-',
+                        ];
+                    }
+
+                    Carbon::useStrictMode(false);
+
+                    // If ANY validation/parsing failed → rollback with reasons
+                    if (!empty($errors)) {
+                        throw new \RuntimeException('Validation failed for one or more children: ' . implode('; ', $errors));
+                    }
+
+                    // If nothing to insert, just commit (no-op) and log
+                    if (empty($toInsert)) {
+                        DB::commit();
+                        Log::info('Import no-op: no valid children found to insert', [
+                            'member_id' => $target->id,
+                            'file_no'   => $legacy->file_no ?? null,
+                        ]);
                         continue;
                     }
 
-                    // Try to parse DOB robustly:
-                    // 1) non-padded day/month: j/n/Y  (e.g., 2/3/1991)
-                    // 2) padded fallback: d/m/Y      (e.g., 02/03/1991)
-                    $dob = null;
-                    try {
-                        Carbon::useStrictMode(); // fail on invalid dates
-                        $dob = Carbon::createFromFormat('j/n/Y', trim($rawDob));
-                    } catch (\Throwable $e) {
-                        try {
-                            $dob = Carbon::createFromFormat('d/m/Y', trim($rawDob));
-                        } catch (\Throwable $e2) {
-                            // Could log here and skip
-                            continue;
-                        }
-                    } finally {
-                        Carbon::useStrictMode(false);
+                    // Write staged children
+                    foreach ($toInsert as $row) {
+                        $target->children()->create($row);
                     }
 
-                    // Compute age safely
-                    $age = $dob->diffInYears(now());
+                    DB::commit();
 
-                    // Decide membership
-                    $child_membership = $defaultMembership; // >= 30
-                    if ($age < 18) {
-                        $child_membership = $memberships['child'];
-                    } elseif ($age < 30) {
-                        $child_membership = $memberships['household'];
-                    }
-
-                    // Create the child
-                    $member_from_new_db->children()->create([
-                        'cnic'           => '-',
-                        'child_name'     => $name,
-                        'date_of_birth'  => $dob->format('Y-m-d'),
-                        'date_of_issue'  => now(),
-                        'validity'       => now(),
-                        'profile_pic'    => 'profile_pictures/default-user.png',
-                        'membership_id'  => $child_membership,
+                    Log::info('Import success: children inserted', [
+                        'member_id' => $target->id,
+                        'file_no'   => $legacy->file_no ?? null,
+                        'count'     => count($toInsert),
                     ]);
+
+                } catch (\Throwable $e) {
+                    DB::rollBack();
+
+                    // Combine collected reasons + exception message
+                    $reason = $e->getMessage();
+                    if (!empty($errors)) {
+                        $reason .= ' | Reasons: ' . implode(' | ', $errors);
+                    }
+
+                    Log::error('Import failed and rolled back for member', [
+                        'member_id' => $target->id ?? null,
+                        'file_no'   => $legacy->file_no ?? null,
+                        'error'     => $reason,
+                    ]);
+                } finally {
+                    // Always reset strict mode
+                    Carbon::useStrictMode(false);
                 }
             }
         });
 });
+
 
 Route::get("/member/{member}/get", [MemberController::class, "getDetails"])->name("member.get");
 
