@@ -40,6 +40,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TempMemberController;
+use Illuminate\Support\Facades\Log;
 
 Route::get("sheets", function() {
     Member::chunk(500, function ($members) {
@@ -193,9 +194,6 @@ Route::get("/member/receipt", [ReceiptController::class, "create"])->name("membe
 Route::get("/member/receipts", [ReceiptController::class, "get"])->name("member.recovery.receipts.get");
 Route::get("/member/{receipt}/receipt", [ReceiptController::class, "update"])->name("member.recovery.receipt.update");
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Carbon\Carbon;
 
 Route::get('/import-child', function () {
     DB::connection('old_mysql')
