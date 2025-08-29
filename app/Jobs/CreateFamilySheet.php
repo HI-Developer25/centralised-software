@@ -28,16 +28,25 @@ class CreateFamilySheet implements ShouldQueue
     public function handle(): void
     {
         $pdf = Pdf::loadView("Invoices.member_tree", [ "member" => $this->member ])
-        ->setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
-        ->setPaper("A4", "portrait");
- 
-        $pdfContent = $pdf->output();
-        $fileName = $this->member->member_name . "-" . $this->member->id;
-        $filePath = "members/FamilySheet/" . $fileName . ".pdf";
-        Storage::disk("public")->put($filePath, $pdfContent);
+    ->setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+    ->setPaper("A4", "portrait");
 
-        $this->member->has_receipt_created = true;
-        $this->member->save();
+$pdfContent = $pdf->output();
+$fileName = $this->member->member_name . "-" . $this->member->id . ".pdf";
+$filePath = "members/FamilySheet/" . $fileName;
+
+// Delete previous file if exists
+if (Storage::disk("public")->exists($filePath)) {
+    Storage::disk("public")->delete($filePath);
+}
+
+// Save new file
+Storage::disk("public")->put($filePath, $pdfContent);
+
+// Update member flag
+$this->member->has_receipt_created = true;
+$this->member->save();
+
         
     }
 }
