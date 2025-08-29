@@ -59,7 +59,7 @@
         Temporary Members
       </h2>
       
-      <div style="display: flex; justify-content: space-between;">
+      <div style="display: flex; gap: 10px;">
         <input v-model="search" class="block w-full mt-1 text-sm search-input form-input" style="width: 25%; margin-bottom: 20px;" placeholder="Search">
         <select v-model="count">
           <option value="15">15</option>
