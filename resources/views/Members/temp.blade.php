@@ -238,7 +238,7 @@
             const response = await axios.get(url);
             console.log(response);
             this.tempMembers = response.data.data;
-            this.total = response.data.total;
+            this.total = response.data?.meta?.total;
             // Initialize expanded property for each member
             this.tempMembers.forEach(member => {
               member.expanded = false;
