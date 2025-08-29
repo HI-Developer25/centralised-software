@@ -195,7 +195,7 @@ Route::get("/member/receipts", [ReceiptController::class, "get"])->name("member.
 Route::get("/member/{receipt}/receipt", [ReceiptController::class, "update"])->name("member.recovery.receipt.update");
 
 
-Route::get('/import-child', function () {
+Route::get('/import-children', function () {
     DB::connection('old_mysql')
         ->table('members_2')
         ->orderBy('id')
