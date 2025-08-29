@@ -18,7 +18,7 @@ class TempMemberController extends Controller
                 "<=",
                 Carbon::now()->subYears(30)
             );
-        })->paginate(15);
+        })->paginate(30);
         
         return ThirtyPlusMemberResource::collection($members);
     }

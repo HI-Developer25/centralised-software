@@ -61,7 +61,13 @@
       
       <div style="display: flex; justify-content: space-between;">
         <input v-model="search" class="block w-full mt-1 text-sm search-input form-input" style="width: 25%; margin-bottom: 20px;" placeholder="Search">
+        <select v-model="count">
+          <option value="15">15</option>
+          <option value="30">30</option>
+          <option value="60">60</option>
+        </select>
       </div>
+    
  
       <table v-if="tempMembers.length > 0 && !is_fetching" class="w-full whitespace-no-wrap">
                  <thead>
@@ -204,6 +210,7 @@
           tempMembers: [],
           links: [],
           search: "",
+          count: 15,
           is_fetching: true
         }
       },
