@@ -210,7 +210,7 @@
           tempMembers: [],
           links: [],
           search: "",
-          count: 15,
+          count: 30,
           is_fetching: true
         }
       },
