@@ -61,7 +61,7 @@
       
       <div style="display: flex; gap: 10px;">
         <input v-model="search" class="block w-full mt-1 text-sm search-input form-input" style="width: 25%; margin-bottom: 20px;" placeholder="Search">
-        <select v-model="count" class="block w-full mt-1 text-sm search-input form-input" style="width: 10%;">
+        <select v-model="count" class="block w-full mt-1 text-sm search-input form-input" style="width: 10%; margin-bottom: 20px;">
           <option value="15">15</option>
           <option value="30">30</option>
           <option value="60">60</option>
