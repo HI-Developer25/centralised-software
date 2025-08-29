@@ -198,7 +198,7 @@ Route::get("/import-child", function() {
         // dd($member->file_no);
         $member_from_new_db = Member::where("file_number", $member->file_no)->first();
         if(!$member_from_new_db->children()?->exists()) {
-            dd($member_from_new_db);
+            dd($members);
         }
     }
 });
