@@ -203,8 +203,8 @@
                                                 }
                                             @endphp
                                             <img src="{{ $base64 }}" alt="<?= htmlspecialchars($member['member_name']); ?>" style="width:50%; height:65px;">
-                                            <p class="members_info mt-1">{{ $member["member_name"] }}</p>
-                                            <div class="bg-white mx-auto" style="height: 40px; width: 80%; border-radius: 3px;">
+                                            <p class="members_info mt-1" style="position: absolute; width: 101%; right: 1px;">{{ $member["member_name"] }}</p>
+                                            <div class="bg-white mx-auto" style="margin-top: 33px; height: 40px; width: 80%; border-radius: 3px;">
                                                 <img src="{{ asset('/assets/img/sign_logo.png') }}" alt="" class="img-fluid" style="height: 40px;">
                                             </div>
                                             <p class="members_info mt-1">SECRETARY<br>GWADAR GYMKHANA</p>
