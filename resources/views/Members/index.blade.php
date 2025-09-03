@@ -78,7 +78,7 @@
   onfocus="this.style.outline='2px solid #ddd6fe'; this.style.outlineOffset='3px';"
   onblur="this.style.outline='none';"
 >
-  ✨ Create
+  Create
 </a>
 
 <a 
@@ -110,10 +110,34 @@
    
   
       @if($setting)
-        <a href="{{ $setting->google_drive_link }}" target="_blank" style="margin-bottom: 20px; text-align: center; display: flex; align-items: center;" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-          <i class="fa-brands fa-google-drive"></i>
-          <p style="margin-left: 10px;">Link</p>
-        </a>
+    <a 
+  href="{{ $setting->google_drive_link }}" 
+  target="_blank"
+  style="
+    margin-bottom: 20px;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1a1a1a; /* softer text for light button */
+    text-decoration: none;
+    background: linear-gradient(90deg, #a7f3d0, #fde68a, #bfdbfe); /* light green → yellow → blue */
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* soft subtle shadow */
+    transition: all 0.3s ease;
+  "
+  onmouseover="this.style.background='linear-gradient(90deg, #6ee7b7, #fcd34d, #93c5fd)'; this.style.transform='translateY(-2px) scale(1.04)';"
+  onmouseout="this.style.background='linear-gradient(90deg, #a7f3d0, #fde68a, #bfdbfe)'; this.style.transform='none';"
+  onfocus="this.style.outline='2px solid #93c5fd'; this.style.outlineOffset='3px';"
+  onblur="this.style.outline='none';"
+>
+  <i class="fa-brands fa-google-drive" style="font-size: 1rem; margin-right: 10px; color: #1a73e8;"></i>
+  Link
+</a>
+
       @endif
             <a
   href="#"
