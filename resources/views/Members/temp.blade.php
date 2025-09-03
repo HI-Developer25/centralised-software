@@ -1,12 +1,12 @@
 <x-layout.app>
-     <style>
-     .iti {
-       width: 100%;
-     }
-     input[type='checkbox'] {
-       width: 12px;
-       height: 12px;
-     }
+  <style>
+    .iti {
+      width: 100%;
+    }
+    input[type='checkbox'] {
+      width: 12px;
+      height: 12px;
+    }
      
            /* Custom button styling */
       .btn-yes {
@@ -49,7 +49,7 @@
         }
         
 
-   </style>
+  </style>
   <script src="https://kit.fontawesome.com/3a7e8b6e65.js" crossorigin="anonymous"></script>
   <main id="app" class="h-full pb-16 overflow-y-auto">
     <div class="container px-6 mx-auto grid">
@@ -71,28 +71,28 @@
     
  
       <table v-if="tempMembers.length > 0 && !is_fetching" class="w-full whitespace-no-wrap">
-                 <thead>
-           <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-             <th class="px-4 py-3">Member Name</th>
-             <th class="px-4 py-3">Contact Number</th>
-             <th class="px-4 py-3">Address</th>
+        <thead>
+          <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+            <th class="px-4 py-3">Member Name</th>
+            <th class="px-4 py-3">Contact Number</th>
+            <th class="px-4 py-3">Address</th>
              <th class="px-4 py-3">Contacted</th>
              <th class="px-4 py-3">Email</th>
              <th class="px-4 py-3">Alt Ph. No.</th>
-           </tr>
-         </thead>
+          </tr>
+        </thead>
         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
           <template v-for="member in tempMembers" :key="member.id">
             <!-- Parent Row -->
                          <tr @click="toggleMemberExpansion(member.id)" class="text-gray-700 dark:text-gray-400 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                                                                                                           <td class="px-4 py-3">
-                 <div class="flex items-center text-sm">
+            <td class="px-4 py-3">
+              <div class="flex items-center text-sm">
                   <!-- Expand/Collapse Icon -->
                   <div class="mr-2 text-gray-500">
                     <i :class="member.expanded ? 'fas fa-chevron-down' : 'fas fa-chevron-right'" class="text-sm"></i>
                   </div>
-                  <!-- Avatar with inset shadow -->
-                  <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
+                <!-- Avatar with inset shadow -->
+                <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
                   <img class="object-cover w-full h-full rounded-full" :src="`https://gwadargymkhana.com.pk/members/storage/${member.profile_picture}`" alt="" loading="lazy">
                   <div class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
                 </div>
@@ -102,7 +102,7 @@
                 </div>
               </div>
             </td>
-                                                       <td class="px-4 py-3 text-sm" v-text="member.contact_number"></td>
+            <td class="px-4 py-3 text-sm" v-text="member.contact_number"></td>
                <td class="px-4 py-3 text-sm">
                 <div v-if="member.address && member.address.length > 60" 
                      class="cursor-help"
@@ -170,7 +170,7 @@
                  </button>
                </td>
                <td class="px-4 py-3 text-sm"></td>
-           </tr>
+          </tr>
         </template>
         </tbody>
       </table>
@@ -355,7 +355,7 @@
            }
            
            return age + ' years';
-         }
+        }
       }
     }).mount("#app");
   </script>

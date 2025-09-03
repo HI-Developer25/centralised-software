@@ -61,6 +61,18 @@
         <a @click="createToWati" style=" margin-bottom: 20px; text-align: center;" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
           Export for wati broadcast <sub>(defaulter and cancelled excluded)</sub>
         </a>
+        <a
+          href="#"
+          class="inline-flex items-center justify-center px-6 py-3 mb-4 text-sm font-semibold text-white 
+                bg-gradient-to-r from-purple-500 to-indigo-600 
+                rounded-xl shadow-lg shadow-purple-500/30
+                hover:from-purple-600 hover:to-indigo-700 
+                focus:outline-none focus:ring-4 focus:ring-purple-300 
+                transition-all duration-300 ease-in-out transform hover:-translate-y-0.5 hover:scale-105"
+        >
+          Export to Excel
+        </a>
+
       @if($setting)
         <a href="{{ $setting->google_drive_link }}" target="_blank" style="margin-bottom: 20px; text-align: center; display: flex; align-items: center;" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
           <i class="fa-brands fa-google-drive"></i>
