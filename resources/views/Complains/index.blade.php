@@ -13,11 +13,14 @@
     <!-- Remove everything INSIDE this div to a really blank page -->
     
     <div class="container px-6 mx-auto grid">
+        <div style="display: flex; align-items: center; gap: 10px;">
       <h2
         class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"
       >
         Manage Complains
       </h2>
+    <a href="https://gwadargymkhana.com.pk/introletter/" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">Complain & Inquiry Link</a>
+        </div>
       <div style="display: flex; justify-content: space-between;">
         <input v-model="search" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" style="width: 25%; margin-bottom: 20px;" placeholder="Search">
       </div>
