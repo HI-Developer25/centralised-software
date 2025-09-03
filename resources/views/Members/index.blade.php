@@ -61,24 +61,39 @@
         <a @click="createToWati" style=" margin-bottom: 20px; text-align: center;" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
           Export for wati broadcast <sub>(defaulter and cancelled excluded)</sub>
         </a>
-        <a
-          href="#"
-          class="inline-flex items-center justify-center px-6 py-3 mb-4 text-sm font-semibold text-white 
-                bg-gradient-to-r from-purple-500 to-indigo-600 
-                rounded-xl shadow-lg shadow-purple-500/30
-                hover:from-purple-600 hover:to-indigo-700 
-                focus:outline-none focus:ring-4 focus:ring-purple-300 
-                transition-all duration-300 ease-in-out transform hover:-translate-y-0.5 hover:scale-105"
-        >
-          Export to Excel
-        </a>
-
+   
+  
       @if($setting)
         <a href="{{ $setting->google_drive_link }}" target="_blank" style="margin-bottom: 20px; text-align: center; display: flex; align-items: center;" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
           <i class="fa-brands fa-google-drive"></i>
           <p style="margin-left: 10px;">Link</p>
         </a>
       @endif
+            <a
+  href="#"
+  style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    margin-bottom: 16px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(to right, #22c55e, #16a34a); /* green gradient */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4); /* green shadow */
+    transition: all 0.3s ease;
+  "
+  onmouseover="this.style.background='linear-gradient(to right,#16a34a,#15803d)'; this.style.transform='translateY(-2px) scale(1.05)';"
+  onmouseout="this.style.background='linear-gradient(to right,#22c55e,#16a34a)'; this.style.transform='none';"
+  onfocus="this.style.outline='2px solid #bbf7d0'; this.style.outlineOffset='3px';"
+  onblur="this.style.outline='none';"
+>
+  Export to Excel
+</a>
+
       </div>
       <div style="display: flex; justify-content: space-between;">
         <input v-model="search" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" style="width: 25%; margin-bottom: 20px;" placeholder="Search">
