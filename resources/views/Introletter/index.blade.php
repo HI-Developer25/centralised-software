@@ -10,12 +10,14 @@
     <!-- Remove everything INSIDE this div to a really blank page -->
     
     <div class="container px-6 mx-auto grid">
+        <div style="display: flex;">
       <h2
         class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"
       >
         Manage Introduction Letters
       </h2>
         <a>Introduction Letter Link</a>
+        </div>
       <div style="display: flex; justify-content: space-between;">
         <input v-model="search" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" style="width: 25%; margin-bottom: 20px;" placeholder="Search">
       </div>
