@@ -55,12 +55,58 @@
         Manage Members
       </h2>
       <div style="display: flex; column-gap: 10px;">
-        <a href="{{ route('member.create') }}" style="margin-bottom: 20px; text-align: center;" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-          Create
-        </a>
-        <a @click="createToWati" style=" margin-bottom: 20px; text-align: center;" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-          Export for wati broadcast <sub>(defaulter and cancelled excluded)</sub>
-        </a>
+        <a 
+  href="{{ route('member.create') }}" 
+  style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    margin-bottom: 16px;
+    margin-right: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(to right, #8b5cf6, #7c3aed); /* purple gradient */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(124, 58, 237, 0.35);
+    transition: all 0.3s ease;
+  "
+  onmouseover="this.style.background='linear-gradient(to right,#7c3aed,#5b21b6)'; this.style.transform='translateY(-2px) scale(1.05)';"
+  onmouseout="this.style.background='linear-gradient(to right,#8b5cf6,#7c3aed)'; this.style.transform='none';"
+  onfocus="this.style.outline='2px solid #ddd6fe'; this.style.outlineOffset='3px';"
+  onblur="this.style.outline='none';"
+>
+  ✨ Create
+</a>
+
+<a 
+  @click="createToWati" 
+  style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(to right, #10b981, #059669); /* green gradient */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.35);
+    transition: all 0.3s ease;
+  "
+  onmouseover="this.style.background='linear-gradient(to right,#059669,#047857)'; this.style.transform='translateY(-2px) scale(1.05)';"
+  onmouseout="this.style.background='linear-gradient(to right,#10b981,#059669)'; this.style.transform='none';"
+  onfocus="this.style.outline='2px solid #a7f3d0'; this.style.outlineOffset='3px';"
+  onblur="this.style.outline='none';"
+>
+  Export for Wati broadcast 
+  <sub style="font-size: 0.7rem; opacity: 0.85;">(defaulter and cancelled excluded)</sub>
+</a>
+
    
   
       @if($setting)
