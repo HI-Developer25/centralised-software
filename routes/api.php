@@ -112,6 +112,7 @@ Route::get("/member/fetch-by-membership", function() {
 Route::get("/member/{member}/get", [MemberController::class, "getById"])->name("api.member.getById");
 Route::get("/members/all", [MemberController::class, "getAll"])->name("api.member.all");
 Route::get("/members", [MemberController::class, "index"])->name("api.member.index");
+Route::get("/members/export", [MemberController::class, "exportToExcel"])->name("api.member.export");
 Route::post("/member/create", [MemberController::class, "store"])->name("api.member.create");
 Route::delete("/member/{member}/delete", [MemberController::class, "destroy"])->name("api.member.delete");
 Route::put("/member/{member}/update", [MemberController::class, "update"])->name("api.member.update");
@@ -120,6 +121,7 @@ Route::get("/member/birthdays", [BirthdayController::class, "index"])->name("api
 Route::post("/membership-card/add-card", [CardTypeController::class, "store"])->name("api.card.add");
 Route::get("/membership-cards", [CardTypeController::class, "index"])->name("api.card.index");
 Route::get("/membership-cards/all", [CardTypeController::class, "getAll"])->name("api.card.all");
+Route::get("/card-types", [CardTypeController::class, "getTypes"])->name("api.card.types");
 Route::delete("/membership-card/{cardType}/delete", [CardTypeController::class, "destroy"])->name("api.card.delete");
 Route::put("/membership-card/{cardType}/update", [CardTypeController::class, "update"])->name("api.card.update");
 Route::get("/child/memberships", [CardTypeController::class, "childMemberships"])->name("api.card.child");

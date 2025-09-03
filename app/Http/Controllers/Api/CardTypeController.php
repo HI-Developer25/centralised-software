@@ -57,4 +57,10 @@ class CardTypeController extends Controller
 
         return $this->apiResponse->success("Card types fetched", $cardTypes);
     }
+    
+    public function getTypes() {
+        $cardTypes = CardType::select('id', 'card_name')->get();
+        
+        return $this->apiResponse->success("Card types fetched", $cardTypes);
+    }
 }

@@ -139,8 +139,9 @@
 </a>
 
       @endif
-            <a
-  href="#"
+            <button
+  @click="exportToExcel"
+  :disabled="isExporting"
   style="
     display: inline-flex;
     align-items: center;
@@ -155,18 +156,26 @@
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4); /* green shadow */
     transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
   "
   onmouseover="this.style.background='linear-gradient(to right,#16a34a,#15803d)'; this.style.transform='translateY(-2px) scale(1.05)';"
   onmouseout="this.style.background='linear-gradient(to right,#22c55e,#16a34a)'; this.style.transform='none';"
   onfocus="this.style.outline='2px solid #bbf7d0'; this.style.outlineOffset='3px';"
   onblur="this.style.outline='none';"
 >
-  Export to Excel
-</a>
+  <span v-if="isExporting" class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span>
+  <span v-text="isExporting ? 'Exporting...' : 'Export to Excel'"></span>
+</button>
 
       </div>
-      <div style="display: flex; justify-content: space-between;">
+      <div style="display: flex; justify-content: space-between; gap: 15px;">
         <input v-model="search" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" style="width: 25%; margin-bottom: 20px;" placeholder="Search">
+        
+        <select v-model="membershipFilter" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-select" style="width: 20%; margin-bottom: 20px;">
+          <option value="">All Membership Types</option>
+          <option v-for="membership in membershipTypes" :key="membership.id" :value="membership.id" v-text="membership.card_name"></option>
+        </select>
       </div>
  
       <table v-if="members.length > 0 && !is_fetching" class="w-full whitespace-no-wrap">
@@ -266,8 +275,11 @@
           members: [],
           links: [],
           search: "",
+          membershipFilter: "",
+          membershipTypes: [],
           parentCheckbox: "",
           is_fetching: true,
+          isExporting: false,
           child_checkbox: []
         }
       },
@@ -283,12 +295,18 @@
           this.$data = Object.assign(this.$data, savedData);
         }
 
+        // Fetch membership types from database
+        await this.getMembershipTypes();
+        
         // Checking if the url is there is session storage
         this.getContent(route("api.member.index"));
       },
       watch: {
         search(newValue) {
-          this.getContent(route("api.member.index", { keyword: newValue }));
+          this.getContent(route("api.member.index", { keyword: newValue, membership_type: this.membershipFilter }));
+        },
+        membershipFilter(newValue) {
+          this.getContent(route("api.member.index", { keyword: this.search, membership_type: newValue }));
         },
         parentCheckbox(newValue) {
           const child_checkboxes = document.querySelectorAll(".child-checkboxes");
@@ -344,6 +362,15 @@
           this.parentCheckbox = false;
           this.getContent(url);
         },
+        async getMembershipTypes() {
+          try {
+            const response = await axios.get(route("api.card.types"));
+            this.membershipTypes = response.data.data || [];
+          } catch (error) {
+            console.error('Error fetching membership types:', error);
+            this.membershipTypes = [];
+          }
+        },
         async getContent(url) {
           this.is_fetching = true;
           const response = await axios.get(url);
@@ -372,6 +399,54 @@
               } 
             }
           });
+        },
+        async exportToExcel() {
+          this.isExporting = true;
+          try {
+            const params = new URLSearchParams();
+            if (this.search) params.append('keyword', this.search);
+            if (this.membershipFilter) params.append('membership_type', this.membershipFilter);
+            
+            const url = route("api.member.export") + (params.toString() ? '?' + params.toString() : '');
+            
+            // Use axios to get the file with proper authentication
+            const response = await axios.get(url, {
+              responseType: 'blob',
+              headers: {
+                'Accept': 'text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+              }
+            });
+            
+            // Create blob and download
+            const blob = new Blob([response.data], { type: 'text/csv' });
+            const downloadUrl = window.URL.createObjectURL(blob);
+            
+            // Determine filename from response headers or use default
+            const contentDisposition = response.headers['content-disposition'];
+            let filename = 'members.csv';
+            if (contentDisposition) {
+              const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+              if (filenameMatch) {
+                filename = filenameMatch[1];
+              }
+            }
+            
+            // Create download link
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Clean up the URL object
+            window.URL.revokeObjectURL(downloadUrl);
+          } catch (error) {
+            console.error('Error exporting to Excel:', error);
+            alert('Error exporting data. Please try again.');
+          } finally {
+            this.isExporting = false;
+          }
         }
       }
     }).mount("#app");

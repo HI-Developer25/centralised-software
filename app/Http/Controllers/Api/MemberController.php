@@ -14,6 +14,7 @@ use App\Services\ImageService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
+use Carbon\Carbon;
 
 class MemberController extends Controller
 {
@@ -115,5 +116,78 @@ class MemberController extends Controller
         $members = Member::whereNotIn("payment_status", [ "level4", "level3" ])->get();
 
         return MemberResource::collection($members);
+    }
+    
+    public function exportToExcel() {
+        $this->user->isAllowedToPerformAction("member:manage");
+        
+        $keyword = request()->keyword;
+        $membershipType = request()->membership_type;
+        
+        // Get filtered members with membership relationship
+        $query = Member::with('membership');
+        
+        // Apply filters
+        if ($keyword) {
+            $query->where(function ($q) use ($keyword) {
+                $q->whereHas('children', function ($qc) use ($keyword) {
+                    $qc->whereLike('child_name', "%$keyword%");
+                })
+                ->orWhereLike('member_name', "%$keyword%")
+                ->orWhereLike('membership_number', "%$keyword%")
+                ->orWhereLike('file_number', "%$keyword%")
+                ->orWhere(function ($q) use ($keyword) {
+                    $q->where('locker_category', $keyword)
+                    ->where('locker_number', $keyword);
+                });
+            });
+        }
+        
+        if ($membershipType) {
+            $query->where('membership_type', $membershipType);
+        }
+        
+        $members = $query->get();
+        
+        // Prepare CSV data
+        $csvData = [];
+        $csvData[] = ['File No.', 'Date', 'Contact No. 01', 'Contact No. 02', 'City', 'M. Status'];
+        
+        foreach ($members as $member) {
+            // Format date as 29-Nov-24
+            $formattedDate = $member->date_of_birth ? Carbon::parse($member->date_of_birth)->format('d-M-y') : '';
+            
+            // Format phone numbers (remove + and country code)
+            $phone1 = $member->phone_number ? str_replace('+', '', $member->phone_number) : '';
+            $phone2 = $member->alternate_ph_number ? str_replace('+', '', $member->alternate_ph_number) : '';
+            
+            $csvData[] = [
+                $member->file_number,
+                $formattedDate,
+                $phone1,
+                $phone2,
+                $member->city,
+                $member->membership ? $member->membership->card_name : ''
+            ];
+        }
+        
+        // Convert to CSV string
+        $csvContent = '';
+        foreach ($csvData as $row) {
+            $csvContent .= implode(',', array_map(function($field) {
+                return '"' . str_replace('"', '""', $field) . '"';
+            }, $row)) . "\n";
+        }
+        
+        // Determine filename based on membership type
+        $membershipTypeName = $membershipType && $members->first() && $members->first()->membership 
+            ? $members->first()->membership->card_name 
+            : 'AllMembers';
+        
+        $filename = $membershipTypeName . '.csv';
+        
+        return response($csvContent)
+            ->header('Content-Type', 'text/csv')
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
     }
 }
