@@ -151,23 +151,18 @@ class MemberController extends Controller
         
         // Prepare CSV data
         $csvData = [];
-        $csvData[] = ['File No.', 'Date', 'Contact No. 01', 'Contact No. 02', 'City', 'M. Status'];
+        $csvData[] = ['Member Name', 'Membership Number', 'Contact No', 'File No', 'City'];
         
         foreach ($members as $member) {
-            // Format date as 29-Nov-24
-            $formattedDate = $member->date_of_birth ? Carbon::parse($member->date_of_birth)->format('d-M-y') : '';
-            
-            // Format phone numbers (remove + and country code)
-            $phone1 = $member->phone_number ? str_replace('+', '', $member->phone_number) : '';
-            $phone2 = $member->alternate_ph_number ? str_replace('+', '', $member->alternate_ph_number) : '';
+            // Format phone number (remove + and country code)
+            $phone = $member->phone_number ? str_replace('+', '', $member->phone_number) : '';
             
             $csvData[] = [
+                $member->member_name,
+                $member->membership_number,
+                $phone,
                 $member->file_number,
-                $formattedDate,
-                $phone1,
-                $phone2,
-                $member->city,
-                $member->membership ? $member->membership->card_name : ''
+                $member->city
             ];
         }
         
