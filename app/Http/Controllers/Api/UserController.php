@@ -57,14 +57,16 @@ class UserController extends Controller
             "username" => [ "required" ],
             "fullname" => [ "required" ],
             "email" => [ "required", "email" ],
-            "password" => [ "required" ],
             "permissions" => [ "required" ]
         ]);
+
+        if(request()->has("password")) {
+            $validator["password"] = [ "required" ];
+        }
 
         if($validator->fails()) {
             $this->apiResponse->error(422, $validator->errors());
         }
-
 
         DB::transaction(function() use($validator, $user) {
 
