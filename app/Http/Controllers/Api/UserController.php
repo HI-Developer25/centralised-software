@@ -53,16 +53,19 @@ class UserController extends Controller
         return $this->user->getAbilities();
     }
     public function update(User $user) {
-        $validator = Validator::make(request()->all(), [
+        $rules = [
             "username" => [ "required" ],
             "fullname" => [ "required" ],
             "email" => [ "required", "email" ],
             "permissions" => [ "required" ]
-        ]);
+        ];
 
         if(request()->has("password")) {
-            $validator["password"] = [ "required" ];
+            $rules["password"] = [ "required" ];
         }
+
+        $validator = Validator::make(request()->all(), $rules);
+
 
         if($validator->fails()) {
             $this->apiResponse->error(422, $validator->errors());
