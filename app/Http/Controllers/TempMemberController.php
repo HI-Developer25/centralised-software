@@ -25,10 +25,11 @@ class TempMemberController extends Controller
         $transformedMembers = $members->map(function($member) {
             return [
                 'member_name' => $member->member_name,
-                'contact_number' => $member->phone_number,
+                'phone_number_code' => $member->phone_number_code,
+                'contact_number' => \Str::replaceFirst("+", "", $member->phone_number),
                 'address' => $member->residential_address,
                 'email' => $member->email_address,
-                'alternate_ph_number' => $member->alternate_ph_number,
+                'alternate_ph_number' => $member->alternate_ph_number ?? "N/A",
                 'membership_type' => $member->membership ? $member->membership->card_name : 'Unknown',
                 'profile_picture' => $member->profile_picture,
                 'children' => $member->children->filter(function($child) {

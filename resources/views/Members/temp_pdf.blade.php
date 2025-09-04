@@ -119,6 +119,7 @@
     
     .child-indent {
         padding-left: 20px;
+        margin-left: 10px;
     }
     
     @page {
@@ -168,7 +169,7 @@
                             </div>
                         </div>
                     </td>
-                    <td>{{ $member['contact_number'] ?? 'N/A' }}</td>
+                    <td>+{{ $member['phone_number_code'] ?? 'N/A' }} {{ $member['contact_number'] ?? 'N/A' }}</td>
                     <td class="address-cell">
                         {{ strip_tags(str_replace('<br>', ', ', $member['address'] ?? 'N/A')) }}
                     </td>
@@ -181,7 +182,7 @@
                     @foreach($member['children'] as $child)
                         <tr class="child-row">
                             <td class="child-indent">
-                                <div class="member-info">
+                                <div class="member-info" style="padding-left: 20px;">
                                     @if(isset($child['profile_pic']))
                                         <img src="https://gwadargymkhana.com.pk/members/storage/{{ $child['profile_pic'] }}" 
                                              alt="Child Profile" class="member-avatar">
