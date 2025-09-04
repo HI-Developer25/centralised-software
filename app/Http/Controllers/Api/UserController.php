@@ -60,7 +60,7 @@ class UserController extends Controller
             "permissions" => [ "required" ]
         ];
 
-        if(request()->has("password")) {
+        if(request()->password) {
             $rules["password"] = [ "required" ];
         }
 
