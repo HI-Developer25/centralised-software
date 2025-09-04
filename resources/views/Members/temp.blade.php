@@ -59,13 +59,21 @@
         Temporary Members
       </h2>
       
-      <div style="display: flex; gap: 10px;">
+      <div style="display: flex; gap: 10px; align-items: center;">
         <input v-model="search" class="block w-full mt-1 text-sm search-input form-input" style="width: 25%; margin-bottom: 20px;" placeholder="Search">
         <select v-model="count" class="block w-full mt-1 text-sm search-input form-input" style="width: 10%; margin-bottom: 20px;">
           <option value="15">15</option>
           <option value="30">30</option>
           <option value="60">60</option>
         </select>
+        <a href="{{ route('temp.member.pdf') }}" 
+           class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center" 
+           style="margin-bottom: 20px; text-decoration: none;">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          Export PDF
+        </a>
       </div>
       <p v-text="`${total} Total Children`"></p>
     
