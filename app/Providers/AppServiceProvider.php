@@ -3,10 +3,17 @@
 namespace App\Providers;
 
 use App\Models\PersonalAccessToken;
+use Exception;
+use Google\Client;
+use Google\Service\Drive\Drive;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
+use Masbug\Flysystem\GoogleDriveAdapter;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->loadGoogleStorageDriver();
         Builder::macro('withAndWhereHas', function ($relation, $constraint) {
             return $this->whereHas($relation, $constraint)
                         ->with([$relation => $constraint]);
@@ -52,5 +60,30 @@ class AppServiceProvider extends ServiceProvider
 
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
 
+    }
+
+    private function loadGoogleStorageDriver(string $driverName = "google") {
+        try {
+        Storage::extend($driverName, function($app, $config) {
+            $options = [];
+
+            if (!empty($config['teamDriveId'] ?? null)) {
+                $options['teamDriveId'] = $config['teamDriveId'];
+            }
+
+            $client = new Client();
+            $client->setClientId($config['clientId']);
+            $client->setClientSecret($config['clientSecret']);
+            $client->refreshToken($config['refreshToken']);
+
+            $service = new \Google\Service\Drive($client);
+            $adapter = new GoogleDriveAdapter($service, $config['folder'] ?? '/', $options);
+            $driver = new \League\Flysystem\Filesystem($adapter);
+
+            return new FilesystemAdapter($driver, $adapter);
+        });
+    } catch(Exception $e) {
+        // your exception handling logic
+    }
     }
 }
