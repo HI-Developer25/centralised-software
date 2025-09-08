@@ -72,10 +72,8 @@ class AppServiceProvider extends ServiceProvider
             }
 
             $client = new Client();
-            $client->setClientId($config['clientId']);
-            $client->setClientSecret($config['clientSecret']);
-            $client->refreshToken($config['refreshToken']);
-
+            $client->setAuthConfig(base_path(env('GOOGLE_SERVICE_ACCOUNT_PATH')));
+            
             $service = new \Google\Service\Drive($client);
             $adapter = new GoogleDriveAdapter($service, $config['folder'] ?? '/', $options);
             $driver = new \League\Flysystem\Filesystem($adapter);
