@@ -30,6 +30,12 @@ return [
 
     'disks' => [
 
+        'google' => [
+            'driver' => 'google',
+            'serviceAccountCredentialsJson' => base_path(env("GOOGLE_SERVICE_ACCOUNT_PATH")),
+            'folderId' => '1dFWSTlyNZP1Q8457qVQVYviAD9-LJfdu'
+        ],
+
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),
