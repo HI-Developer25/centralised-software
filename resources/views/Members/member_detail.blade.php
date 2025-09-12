@@ -142,10 +142,10 @@
                   $member->emergency_contact
                 )) ;
             @endphp
-            <span class="editable" data-editable="emergency_contact">
-              {{ strlen(Str::replaceFirst($member->emergency_contact_code, "", $emergency_ph_number)) > 0 ? $emergency_ph_number : "-" }}
-            </span>
-            <input type="hidden" id="emergency_contact" value="{{ $member->emergency_contact }}"/>
+            <br>
+            <input type="hidden" id="emergency_contact_code" value="{{ $member->emergency_contact_code }}"/>
+            <input type="hidden" id="emergency_contact_phone_number" value="{{ str_replace('+', '', $member->emergency_contact) }}"/>
+            <input style="width: 100% !important; margin-top: 4px !important;" id="emergency_contact" data-index="2" data-message="emergency_message" class="phone editable" value="{{ $emergency_ph_number }}" placeholder="Emergency Contact">
           </p>
           <p style="margin-top: 10px;"><span style="display: inline-block; width: 200px;">Email Address:</span> 
             <span class="editable" data-editable="email_address" type="email">
@@ -279,6 +279,20 @@
               </span>
               <input type="hidden" id="spouse.blood_group.{{ $spouse->id }}" value="{{ $spouse->blood_group }}"/>
             <p>
+            <p>Contact: 
+              @php
+                $spouse_emergency = '';
+                if($spouse->emergency_country_code && $spouse->emergency_phone_number) {
+                  $spouse_emergency = '+' . $spouse->emergency_country_code . $spouse->emergency_phone_number;
+                } elseif($spouse->emergency_number) {
+                  $spouse_emergency = $spouse->emergency_number;
+                }
+              @endphp
+              <br>
+              <input type="hidden" id="spouse.emergency_country_code.{{ $spouse->id }}" value="{{ $spouse->emergency_country_code }}"/>
+              <input type="hidden" id="spouse.emergency_phone_number.{{ $spouse->id }}" value="{{ $spouse->emergency_phone_number }}"/>
+              <input style="width: 100% !important; margin-top: 4px !important;" id="spouse.emergency_number.{{ $spouse->id }}" data-index="spouse_emergency_{{ $spouse->id }}" data-message="emergency_message" class="phone editable" value="{{ $spouse_emergency }}" placeholder="Contact">
+            <p>
           </div>
           <button class="bg-purple-600" @click="divorce('{{ $spouse->id }}')" style="color: white; width: 90%; margin: 0 auto; border-radius: 5px; margin-top: 10px;">Delete</button>
         </div>
@@ -346,6 +360,20 @@
                   {{ $child->blood_group }}
                 </span>
                 <input type="hidden" id="child.blood_group.{{ $child->id }}" value="{{ $child->validity }}"/>
+              <p>
+              <p>Contact: 
+                @php
+                  $child_emergency = '';
+                  if($child->emergency_country_code && $child->emergency_phone_number) {
+                    $child_emergency = '+' . $child->emergency_country_code . $child->emergency_phone_number;
+                  } elseif($child->emergency_number) {
+                    $child_emergency = $child->emergency_number;
+                  }
+                @endphp
+                <br>
+                <input type="hidden" id="child.emergency_country_code.{{ $child->id }}" value="{{ $child->emergency_country_code }}"/>
+                <input type="hidden" id="child.emergency_phone_number.{{ $child->id }}" value="{{ $child->emergency_phone_number }}"/>
+                <input style="width: 100% !important; margin-top: 4px !important;" id="child.emergency_number.{{ $child->id }}" data-index="child_emergency_{{ $child->id }}" data-message="emergency_message" class="phone editable" value="{{ $child_emergency }}" placeholder="Contact">
               <p>
             </div>
             <button class="bg-purple-600" @click="deleteChild('{{ $child->id }}')" style="color: white; width: 90%; margin: 0 auto; border-radius: 5px; margin-top: 10px;">Delete</button>
@@ -729,6 +757,39 @@
         }
       },
       mounted() {
+        // Initialize phone inputs for emergency numbers
+        const phoneInputs = document.querySelectorAll('.phone');
+        phoneInputs.forEach(input => {
+          const iti = window.intlTelInput(input, {
+            initialCountry: "PK",
+            loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/utils.js"),
+          });
+
+          input.addEventListener("countrychange", () => updateEmergencyPhoneNumber(iti, input));
+          input.addEventListener("input", () => updateEmergencyPhoneNumber(iti, input));
+        });
+
+        const updateEmergencyPhoneNumber = (iti, input) => {
+          const countryData = iti.getSelectedCountryData();
+          const inputId = input.id;
+          
+          if (inputId === 'emergency_contact') {
+            // Handle main member emergency contact
+            document.getElementById('emergency_contact_code').value = countryData.dialCode;
+            document.getElementById('emergency_contact_phone_number').value = iti.getNumber().replace(/^\+/, '');
+          } else if (inputId.includes('spouse')) {
+            // Handle spouse emergency numbers
+            const spouseId = inputId.split('.')[2];
+            document.getElementById(`spouse.emergency_country_code.${spouseId}`).value = countryData.dialCode;
+            document.getElementById(`spouse.emergency_phone_number.${spouseId}`).value = iti.getNumber().replace(/^\+/, '');
+          } else if (inputId.includes('child')) {
+            // Handle child emergency numbers
+            const childId = inputId.split('.')[2];
+            document.getElementById(`child.emergency_country_code.${childId}`).value = countryData.dialCode;
+            document.getElementById(`child.emergency_phone_number.${childId}`).value = iti.getNumber().replace(/^\+/, '');
+          }
+        };
+
         const editables = document.querySelectorAll(".editable");
 
         editables.forEach(editable => {
@@ -760,12 +821,90 @@
 
             let parameter = {};
             let routeName = 'member.patch';
+            let attribute = input_field.id.split(".")?.[1] ?? input_field.id;
+            let value = input_field.value;
+            
             if(input_field.id.includes(".") && input_field.id.includes("child")) {
               routeName = 'child.patch';
-              parameter.child = input_field.id.split(".")[2]
+              parameter.child = input_field.id.split(".")[2];
+              
+              // Handle emergency number updates
+              if(input_field.id.includes("emergency_number")) {
+                const childId = input_field.id.split(".")[2];
+                const countryCode = document.getElementById(`child.emergency_country_code.${childId}`).value;
+                const phoneNumber = document.getElementById(`child.emergency_phone_number.${childId}`).value;
+                
+                // Update emergency_number with full phone number
+                attribute = "emergency_number";
+                value = input_field.value;
+                
+                // Also update country code and phone number separately
+                await axios.post(route('child.patch', { 
+                  child: childId, 
+                  attribute: "emergency_country_code", 
+                  value: countryCode, 
+                  _method: "PATCH" 
+                }));
+                
+                await axios.post(route('child.patch', { 
+                  child: childId, 
+                  attribute: "emergency_phone_number", 
+                  value: phoneNumber, 
+                  _method: "PATCH" 
+                }));
+              }
             } else if(input_field.id.includes(".") && input_field.id.includes("spouse")) {
               routeName = 'spouse.patch';
               parameter.spouse = input_field.id.split(".")[2];
+              
+              // Handle emergency number updates
+              if(input_field.id.includes("emergency_number")) {
+                const spouseId = input_field.id.split(".")[2];
+                const countryCode = document.getElementById(`spouse.emergency_country_code.${spouseId}`).value;
+                const phoneNumber = document.getElementById(`spouse.emergency_phone_number.${spouseId}`).value;
+                
+                // Update emergency_number with full phone number
+                attribute = "emergency_number";
+                value = input_field.value;
+                
+                // Also update country code and phone number separately
+                await axios.post(route('spouse.patch', { 
+                  spouse: spouseId, 
+                  attribute: "emergency_country_code", 
+                  value: countryCode, 
+                  _method: "PATCH" 
+                }));
+                
+                await axios.post(route('spouse.patch', { 
+                  spouse: spouseId, 
+                  attribute: "emergency_phone_number", 
+                  value: phoneNumber, 
+                  _method: "PATCH" 
+                }));
+              }
+            } else if(input_field.id === 'emergency_contact') {
+              // Handle main member emergency contact
+              const countryCode = document.getElementById('emergency_contact_code').value;
+              const phoneNumber = document.getElementById('emergency_contact_phone_number').value;
+              
+              // Update emergency_contact with full phone number
+              attribute = "emergency_contact";
+              value = input_field.value;
+              
+              // Also update country code and phone number separately
+              await axios.post(route('member.patch', { 
+                ...route().params, 
+                attribute: "emergency_contact_code", 
+                value: countryCode, 
+                _method: "PATCH" 
+              }));
+              
+              await axios.post(route('member.patch', { 
+                ...route().params, 
+                attribute: "emergency_contact", 
+                value: phoneNumber, 
+                _method: "PATCH" 
+              }));
             } else {
               routeName = "member.patch";
               parameter = { ...route().params };
@@ -773,8 +912,8 @@
           
             const response = await axios.post(route(routeName, { 
               ...parameter, 
-              attribute: input_field.id.split(".")?.[1] ?? input_field.id, 
-              value: input_field.value, 
+              attribute: attribute, 
+              value: value, 
               _method: "PATCH" 
             }));
             console.log(response);

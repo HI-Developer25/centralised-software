@@ -19,7 +19,7 @@ class CleanMemberRequest
         $children = request()->children;
 
         $children = collect($children)->filter(function ($child) {
-            $excludeKeys = ['profile_pic'];  // allow null in these keys
+            $excludeKeys = ['profile_pic', 'emergency_number', 'emergency_country_code', 'emergency_phone_number'];  // allow null in these keys
 
             foreach ($child as $key => $value) {
                 if (in_array($key, $excludeKeys, true)) {
@@ -34,7 +34,7 @@ class CleanMemberRequest
         });
 
         $spouses = collect($spouses)->filter(function ($spouse) {
-            $excludeKeys = ['profile_pic'];  // allow null in these keys
+            $excludeKeys = ['profile_pic', 'emergency_number', 'emergency_country_code', 'emergency_phone_number'];  // allow null in these keys
 
             foreach ($spouse as $key => $value) {
                 if (in_array($key, $excludeKeys, true)) {

@@ -257,19 +257,28 @@
                   </div>
                 </div>
                 <div :style="{ display: !spouse.hidden ? 'flex' : 'none'}" style="column-gap: 20px;">
-                  <div style="width: 33.33%;">
+                  <div style="width: 25%;">
                     <label class="block text-sm" style="margin-bottom: 20px;">
                       <span class="text-gray-700 dark:text-gray-400">Validity</span>
                       <input v-model="spouse.validity" type="date" style="width: 100% !important; margin-top: 4px !important;" data-message="email_message" class="optional step_4 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Validity">
                     </label>
                   </div>
-                  <div style="width: 33.33%;">
+                  <div style="width: 25%;">
                     <label class="block text-sm" style="margin-bottom: 20px;">
                       <span class="text-gray-700 dark:text-gray-400">Blood Group</span>
                       <input v-model="spouse.blood_group" type="text" style="width: 100% !important; margin-top: 4px !important;" data-message="email_message" class="optional step_4 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Blood Group">
                     </label>
                   </div>
-                  <div style="width: 33.33%;">
+                  <div style="width: 25%;">
+                    <label class="block text-sm" style="margin-bottom: 20px;">
+                      <span class="text-gray-700 dark:text-gray-400">Emergency Number</span>
+                      <br>
+                      <input type="hidden" v-model="spouse.emergency_country_code" />
+                      <input type="hidden" v-model="spouse.emergency_phone_number"/>
+                      <input v-model="spouse.emergency_number" style="width: 100% !important; margin-top: 4px !important;" :data-index="`spouse_${index}_emergency`" data-message="email_message" class="phone optional step_4 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Emergency Number">
+                    </label>
+                  </div>
+                  <div style="width: 25%;">
                     <label class="block text-sm" style="margin-bottom: 20px;">
                       <span class="text-gray-700 dark:text-gray-400">Picture</span>
                       <input type="file" @change="spouse.profile_pic = $event.target.files[0]" style="width: 100% !important; margin-top: 4px !important;" data-message="email_message" class="optional step_4 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Blood Group">
@@ -320,13 +329,13 @@
                     </div>
                 </div>
                 <div style="width: 100%; display: flex; column-gap: 10px;">
-                    <div style="width: 25%;">
+                    <div style="width: 20%;">
                         <label class="block text-sm" style="margin-bottom: 20px;">
                             <span class="text-gray-700 dark:text-gray-400" style="text-transform: capitalize;" v-text="`Validity`"></span>
                             <input v-model="child.validity" type="date" style="width: 100% !important; margin-top: 4px !important;" data-message="email_message" class="optional step_5 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" :placeholder="`Validity`">
                         </label>
                     </div>
-                    <div style="width: 25%;">
+                    <div style="width: 20%;">
                         <label class="block text-sm" style="margin-bottom: 20px;">
                             <span class="text-gray-700 dark:text-gray-400" style="text-transform: capitalize;">Membership Type</span>
                             <select v-model="child.child_card" data-message="membership_type_field_message" class="step_3 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
@@ -334,13 +343,22 @@
                             </select>
                         </label>
                     </div>
-                    <div style="width: 25%;">
+                    <div style="width: 20%;">
                         <label class="block text-sm" style="margin-bottom: 20px;">
                             <span class="text-gray-700 dark:text-gray-400" style="text-transform: capitalize;">Blood Group</span>
                             <input v-model="child.blood_group" type="text" style="width: 100% !important; margin-top: 4px !important;" data-message="email_message" class="optional step_5 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" :placeholder="`Blood Group`">
                         </label>
                     </div>
-                    <div style="width: 25%;">
+                    <div style="width: 20%;">
+                        <label class="block text-sm" style="margin-bottom: 20px;">
+                            <span class="text-gray-700 dark:text-gray-400" style="text-transform: capitalize;">Emergency Number</span>
+                            <br>
+                            <input type="hidden" v-model="child.emergency_country_code" />
+                            <input type="hidden" v-model="child.emergency_phone_number"/>
+                            <input v-model="child.emergency_number" style="width: 100% !important; margin-top: 4px !important;" :data-index="`child_${index}_emergency`" data-message="email_message" class="phone optional step_5 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" :placeholder="`Emergency Number`">
+                        </label>
+                    </div>
+                    <div style="width: 20%;">
                         <label class="block text-sm" style="margin-bottom: 20px;">
                             <span class="text-gray-700 dark:text-gray-400" style="text-transform: capitalize;">Picture</span>
                             <input type="file" @change="child.profile_pic = $event.target.files[0]" style="width: 100% !important; margin-top: 4px !important;" data-message="email_message" class="optional step_5 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" :placeholder="`Date of Issue`">
@@ -717,8 +735,8 @@ new Vue({
     profilePictureBase64: "",
     profile_picture: "",
 
-    spouses: [{id: 1, name: "", cnic: "", date_of_birth: "", date_of_issue: "", validity: "", blood_group: "", profile_pic: "", hidden: false}],
-    children: [{id: 1, childName: "", cnic: "", dob: "", date_of_issue: "", validity: "", blood_group: "", profile_pic: "", child_card: "child", hidden: false}],
+    spouses: [{id: 1, name: "", cnic: "", date_of_birth: "", date_of_issue: "", validity: "", blood_group: "", emergency_number: "", emergency_country_code: "", emergency_phone_number: "", profile_pic: "", hidden: false}],
+    children: [{id: 1, childName: "", cnic: "", dob: "", date_of_issue: "", validity: "", blood_group: "", emergency_number: "", emergency_country_code: "", emergency_phone_number: "", profile_pic: "", child_card: "child", hidden: false}],
 
     form_fee: "",
     processing_fee: "",
@@ -822,7 +840,7 @@ new Vue({
       this.spouses.push({
         id: this.spouses.length + 1,
         name: "", cnic: "", date_of_birth: "", date_of_issue: "",
-        validity: "", blood_group: "", profile_pic: "", hidden: false
+        validity: "", blood_group: "", emergency_number: "", emergency_country_code: "", emergency_phone_number: "", profile_pic: "", hidden: false
       });
     },
     convertToBase64(file) {
@@ -864,7 +882,7 @@ new Vue({
     addNewChild() {
       this.children.push({
         id: this.children.length + 1,
-        name: "", cnic: "", date_of_birth: "", date_of_issue: "", validity: "", blood_group: "", profile_pic: "", child_card: "",hidden: false
+        name: "", cnic: "", date_of_birth: "", date_of_issue: "", validity: "", blood_group: "", emergency_number: "", emergency_country_code: "", emergency_phone_number: "", profile_pic: "", child_card: "",hidden: false
       });
     },
     numberToOrdinal(n) {
@@ -934,6 +952,9 @@ new Vue({
         fd.append(`spouses[${index}][date_of_issue]`, spouse.date_of_issue);
         fd.append(`spouses[${index}][validity]`, spouse.validity);
         fd.append(`spouses[${index}][blood_group]`, spouse.blood_group);
+        fd.append(`spouses[${index}][emergency_number]`, spouse.emergency_number);
+        fd.append(`spouses[${index}][emergency_country_code]`, spouse.emergency_country_code);
+        fd.append(`spouses[${index}][emergency_phone_number]`, spouse.emergency_phone_number);
         fd.append(`spouses[${index}][profile_pic]`, spouse.profile_pic);
       });
 
@@ -944,6 +965,9 @@ new Vue({
         fd.append(`children[${index}][date_of_issue]`, child.date_of_issue);
         fd.append(`children[${index}][validity]`, child.validity);
         fd.append(`children[${index}][blood_group]`, child.blood_group);
+        fd.append(`children[${index}][emergency_number]`, child.emergency_number);
+        fd.append(`children[${index}][emergency_country_code]`, child.emergency_country_code);
+        fd.append(`children[${index}][emergency_phone_number]`, child.emergency_phone_number);
         fd.append(`children[${index}][profile_pic]`, child.profile_pic);
         fd.append(`children[${index}][card_id]`, child.child_card);
       });
@@ -1008,8 +1032,23 @@ new Vue({
 
     const updatePhoneNumber = (iti, input) => {
       const countryData = iti.getSelectedCountryData();
-      this.phone_numbers[input.dataset.index]["countryCode"] = countryData.dialCode;
-      this.phone_numbers[input.dataset.index]["phoneNumber"] = iti.getNumber().replace(/^\+/, '');
+      const dataIndex = input.dataset.index;
+      
+      if (dataIndex && !isNaN(dataIndex)) {
+        // Handle main phone numbers
+        this.phone_numbers[dataIndex]["countryCode"] = countryData.dialCode;
+        this.phone_numbers[dataIndex]["phoneNumber"] = iti.getNumber().replace(/^\+/, '');
+      } else if (dataIndex && dataIndex.startsWith('spouse_')) {
+        // Handle spouse emergency numbers
+        const spouseIndex = parseInt(dataIndex.split('_')[1]);
+        this.spouses[spouseIndex].emergency_country_code = countryData.dialCode;
+        this.spouses[spouseIndex].emergency_phone_number = iti.getNumber().replace(/^\+/, '');
+      } else if (dataIndex && dataIndex.startsWith('child_')) {
+        // Handle child emergency numbers
+        const childIndex = parseInt(dataIndex.split('_')[1]);
+        this.children[childIndex].emergency_country_code = countryData.dialCode;
+        this.children[childIndex].emergency_phone_number = iti.getNumber().replace(/^\+/, '');
+      }
     };
   }
 });

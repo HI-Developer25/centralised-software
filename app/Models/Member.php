@@ -149,6 +149,9 @@ class Member extends Model
                 "date_of_issue" => $spouse["date_of_issue"],
                 "validity" => $spouse["validity"],
                 "blood_group" => $spouse["blood_group"],
+                "emergency_number" => $spouse["emergency_number"] ?? null,
+                "emergency_country_code" => $spouse["emergency_country_code"] ?? null,
+                "emergency_phone_number" => $spouse["emergency_phone_number"] ?? null,
                 "picture" => $fileName
             ]);
         }
@@ -173,6 +176,9 @@ class Member extends Model
                 "date_of_issue" => $child["date_of_issue"],
                 "validity" => $child["validity"],
                 "blood_group" => $child["blood_group"],
+                "emergency_number" => $child["emergency_number"] ?? null,
+                "emergency_country_code" => $child["emergency_country_code"] ?? null,
+                "emergency_phone_number" => $child["emergency_phone_number"] ?? null,
                 "profile_pic" => $fileName,
                 "membership_id" => $child["card_id"]
             ]);

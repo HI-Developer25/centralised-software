@@ -21,6 +21,9 @@ class SpouseController extends Controller
             'validity' => 'required|date',
             'blood_group' => 'required',
             'cnic' => 'required',
+            'emergency_number' => 'nullable|string|max:255',
+            'emergency_country_code' => 'nullable|string|max:10',
+            'emergency_phone_number' => 'nullable|string|max:20',
             'picture' => 'nullable|image|max:2048', // 2MB limit
         ]);
 

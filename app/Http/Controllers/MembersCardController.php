@@ -95,6 +95,16 @@ class MembersCardController extends Controller
                 if($type === "spouse") {
                     $type = \App\Models\Spouse::class;
                     $member = $type::find($id);
+                    
+                    $emergency_contact = $member->emergency_number;
+                    $emergency_contact_code = $member->emergency_contact_code;
+                    if (is_null($emergency_contact) || $emergency_contact === '-') {
+                        $emergency_contact = $member->member->emergency_contact;
+                    }
+                    if (is_null($emergency_contact_code) || $emergency_contact_code === '-') {
+                        $emergency_contact_code = $member->member->emergency_contact_code;
+                    }
+                    
                     $member_collection->push([
                         "id" => "spouse" . $member->id,
                         "membership_number" => $member->member->membership_number,
@@ -105,9 +115,8 @@ class MembersCardController extends Controller
                         "member_name" => $member->spouse_name,
                         "cnic_passport" => $member->cnic,
                         "blood_group" => $member->blood_group,
-                        "emergency_contact" => $member->member->emergency_contact,
-                        "emergency_contact_code" => $member->emergency_contact_code,
-                        "emergency_contact_code" => $member->member->emergency_contact_code,
+                        "emergency_contact" => $emergency_contact,
+                        "emergency_contact_code" => $emergency_contact_code,
                         "date_of_issue" => $member->date_of_issue,
                         "validity" => $member->validity,
                         "profile_picture" => $member->picture
@@ -119,6 +128,15 @@ class MembersCardController extends Controller
                     $card = null;
                     $card = CardType::find($member->membership_id);
                 
+                    $emergency_contact = $member->emergency_number;
+                    $emergency_contact_code = $member->emergency_contact_code;
+                    if (is_null($emergency_contact) || $emergency_contact === '-') {
+                        $emergency_contact = $member->member->emergency_contact;
+                    }
+                    if (is_null($emergency_contact_code) || $emergency_contact_code === '-') {
+                        $emergency_contact_code = $member->member->emergency_contact_code;
+                    }
+                    
                     $member_collection->push([
                         "id" => "child" . $member->id,
                         "membership_number" => $member->member->membership_number,
@@ -129,9 +147,8 @@ class MembersCardController extends Controller
                         "member_name" => $member->child_name,
                         "cnic_passport" => $member->cnic,
                         "blood_group" => $member->blood_group,
-                        "emergency_contact" => $member->member->emergency_contact,
-                        "emergency_contact_code" => $member->emergency_contact_code,
-                        "emergency_contact_code" => $member->member->emergency_contact_code,
+                        "emergency_contact" => $emergency_contact,
+                        "emergency_contact_code" => $emergency_contact_code,
                         "date_of_issue" => $member->date_of_issue,
                         "validity" => $member->validity,
                         "profile_picture" => $member->profile_pic
