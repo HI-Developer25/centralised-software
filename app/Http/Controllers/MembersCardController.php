@@ -96,8 +96,9 @@ class MembersCardController extends Controller
                     $type = \App\Models\Spouse::class;
                     $member = $type::find($id);
                     
-                    $emergency_contact = $member->emergency_number;
+                    $emergency_contact = $member->emergency_phone_number;
                     $emergency_contact_code = $member->emergency_contact_code;
+                    
                     if (is_null($emergency_contact) || $emergency_contact === '-') {
                         $emergency_contact = $member->member->emergency_contact;
                     }
@@ -128,7 +129,7 @@ class MembersCardController extends Controller
                     $card = null;
                     $card = CardType::find($member->membership_id);
                 
-                    $emergency_contact = $member->emergency_number;
+                    $emergency_contact = $member->emergency_phone_number;
                     $emergency_contact_code = $member->emergency_contact_code;
                     if (is_null($emergency_contact) || $emergency_contact === '-') {
                         $emergency_contact = $member->member->emergency_contact;

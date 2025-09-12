@@ -275,7 +275,7 @@
                       <br>
                       <input type="hidden" v-model="spouse.emergency_country_code" />
                       <input type="hidden" v-model="spouse.emergency_phone_number"/>
-                      <input style="width: 100% !important; margin-top: 4px !important;" v-model="spouse.emergency_number" data-index="spouse_${index}_emergency" data-message="emergency_message" class="phone optional step_4 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Contact">
+                      <input style="width: 100% !important; margin-top: 4px !important;" v-model="spouse.emergency_number" :data-index="`spouse_${index}_emergency`" data-message="emergency_message" class="phone optional step_4 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Contact">
                     </label>
                   </div>
                   <div style="width: 25%;">
@@ -355,7 +355,7 @@
                             <br>
                             <input type="hidden" v-model="child.emergency_country_code" />
                             <input type="hidden" v-model="child.emergency_phone_number"/>
-                            <input style="width: 100% !important; margin-top: 4px !important;" v-model="child.emergency_number" data-index="child_${index}_emergency" data-message="emergency_message" class="phone optional step_5 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Contact">
+                            <input style="width: 100% !important; margin-top: 4px !important;" v-model="child.emergency_number" :data-index="`child_${index}_emergency`" data-message="emergency_message" class="phone optional step_5 block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Contact">
                         </label>
                     </div>
                     <div style="width: 20%;">
