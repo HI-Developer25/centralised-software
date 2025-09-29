@@ -776,13 +776,13 @@ new Vue({
     child_memberships: []
   },
   watch: {
-      async selectedCountry(newValue) {
-          const response = await axios.post("https://countriesnow.space/api/v0.1/countries/cities", { country: newValue.country });
-          this.cities = response.data.data;
-      },
+    async selectedCountry(newValue) {
+        const response = await axios.post("https://countriesnow.space/api/v0.1/countries/cities", { country: newValue.country });
+        this.cities = response.data.data;
+    },
     form_fee(newValue) {
       this.form_fee = newValue.toLocaleString();
-    }
+    },
   },
   computed: {
     filtered() {
@@ -817,6 +817,41 @@ new Vue({
     }
   },
   methods: {
+    
+  async putCountryCodes() {
+    const inputs = document.querySelectorAll(".phone");
+
+    inputs.forEach(input => {
+      const iti = window.intlTelInput(input, {
+        initialCountry: "PK",
+        loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/utils.js"),
+      });
+
+      input.addEventListener("countrychange", () => updatePhoneNumber(iti, input));
+      input.addEventListener("input", () => updatePhoneNumber(iti, input));
+    });
+
+    const updatePhoneNumber = (iti, input) => {
+      const countryData = iti.getSelectedCountryData();
+      const dataIndex = input.dataset.index;
+      
+      if (dataIndex && !isNaN(dataIndex)) {
+        // Handle main phone numbers
+        this.phone_numbers[dataIndex]["countryCode"] = countryData.dialCode;
+        this.phone_numbers[dataIndex]["phoneNumber"] = iti.getNumber().replace(/^\+/, '');
+      } else if (dataIndex && dataIndex.startsWith('spouse_')) {
+        // Handle spouse emergency numbers
+        const spouseIndex = parseInt(dataIndex.split('_')[1]);
+        this.spouses[spouseIndex].emergency_country_code = countryData.dialCode;
+        this.spouses[spouseIndex].emergency_phone_number = iti.getNumber().replace(/^\+/, '');
+      } else if (dataIndex && dataIndex.startsWith('child_')) {
+        // Handle child emergency numbers
+        const childIndex = parseInt(dataIndex.split('_')[1]);
+        this.children[childIndex].emergency_country_code = countryData.dialCode;
+        this.children[childIndex].emergency_phone_number = iti.getNumber().replace(/^\+/, '');
+      }
+    };
+  },
     onSearch(query) {
       this.search = query
       this.offset = 0
@@ -835,13 +870,15 @@ new Vue({
       }
       this.children = this.children.filter(child => child.id != id);
     },
-    addSpouse() {
-      this.spouses.forEach(spouse => spouse.hidden = true);
-      this.spouses.push({
+    async addSpouse() {
+      await this.spouses.forEach(spouse => spouse.hidden = true);
+      await this.spouses.push({
         id: this.spouses.length + 1,
         name: "", cnic: "", date_of_birth: "", date_of_issue: "",
         validity: "", blood_group: "", emergency_number: "", emergency_country_code: "", emergency_phone_number: "", profile_pic: "", hidden: false
       });
+      
+      await this.putCountryCodes();
     },
     convertToBase64(file) {
       return new Promise((resolve, reject) => {
@@ -879,11 +916,13 @@ new Vue({
     previous() {
       this.current_step--;
     },
-    addNewChild() {
-      this.children.push({
+    async addNewChild() {
+      await this.children.push({
         id: this.children.length + 1,
         name: "", cnic: "", date_of_birth: "", date_of_issue: "", validity: "", blood_group: "", emergency_number: "", emergency_country_code: "", emergency_phone_number: "", profile_pic: "", child_card: "",hidden: false
       });
+
+      await this.putCountryCodes();
     },
     numberToOrdinal(n) {
       const ordinals = ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh', 'Eighth', 'Ninth', 'Tenth'];
@@ -1018,38 +1057,8 @@ new Vue({
 
     this.formData = new FormData();
 
-    const inputs = document.querySelectorAll(".phone");
+    this.putCountryCodes();
 
-    inputs.forEach(input => {
-      const iti = window.intlTelInput(input, {
-        initialCountry: "PK",
-        loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/utils.js"),
-      });
-
-      input.addEventListener("countrychange", () => updatePhoneNumber(iti, input));
-      input.addEventListener("input", () => updatePhoneNumber(iti, input));
-    });
-
-    const updatePhoneNumber = (iti, input) => {
-      const countryData = iti.getSelectedCountryData();
-      const dataIndex = input.dataset.index;
-      
-      if (dataIndex && !isNaN(dataIndex)) {
-        // Handle main phone numbers
-        this.phone_numbers[dataIndex]["countryCode"] = countryData.dialCode;
-        this.phone_numbers[dataIndex]["phoneNumber"] = iti.getNumber().replace(/^\+/, '');
-      } else if (dataIndex && dataIndex.startsWith('spouse_')) {
-        // Handle spouse emergency numbers
-        const spouseIndex = parseInt(dataIndex.split('_')[1]);
-        this.spouses[spouseIndex].emergency_country_code = countryData.dialCode;
-        this.spouses[spouseIndex].emergency_phone_number = iti.getNumber().replace(/^\+/, '');
-      } else if (dataIndex && dataIndex.startsWith('child_')) {
-        // Handle child emergency numbers
-        const childIndex = parseInt(dataIndex.split('_')[1]);
-        this.children[childIndex].emergency_country_code = countryData.dialCode;
-        this.children[childIndex].emergency_phone_number = iti.getNumber().replace(/^\+/, '');
-      }
-    };
   }
 });
 </script>
