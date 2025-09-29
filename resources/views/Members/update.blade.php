@@ -224,8 +224,8 @@
             <div v-show="current_step === 4" class="step-form px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
               <h5 style="margin-bottom: 20px;" class="dark:text-gray-200">Spouse Information</h5>
               <div class="spouse" v-for="(spouse, index) in spouses" :key="spouse.id">
-                <div style="margin-bottom: 20px; display: flex; justify-content: space-between;" class="spouse-dropdown border border-gray-600 p-3 rounded-md dark:text-gray-200">
-                  <h5 @click="spouse.hidden = !spouse.hidden" v-text="`${numberToOrdinal(index + 1)} Spouse Information`"></h5>
+                <div @click="spouse.hidden = !spouse.hidden" style="margin-bottom: 20px; display: flex; justify-content: space-between;" class="spouse-dropdown border border-gray-600 p-3 rounded-md dark:text-gray-200">
+                  <h5 v-text="`${numberToOrdinal(index + 1)} Spouse Information`"></h5>
                   <button class="bg-red-600 text-white px-2 rounded-md" @click="removeSpouse(spouse.id)">Delete</button>
                 </div>
                 <div :style="{ display: !spouse.hidden ? 'flex' : 'none'}" style="column-gap: 20px;">
@@ -834,6 +834,40 @@ $member->children->map(function ($child) {
     }
   },
   methods: {
+    async putCountryCodes() {
+      const inputs = document.querySelectorAll(".phone");
+
+      inputs.forEach(input => {
+        const iti = window.intlTelInput(input, {
+          initialCountry: "PK",
+          loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/utils.js"),
+        });
+
+        input.addEventListener("countrychange", () => updatePhoneNumber(iti, input));
+        input.addEventListener("input", () => updatePhoneNumber(iti, input));
+      });
+
+      const updatePhoneNumber = (iti, input) => {
+        const countryData = iti.getSelectedCountryData();
+        const dataIndex = input.dataset.index;
+        
+        if (dataIndex && !isNaN(dataIndex)) {
+          // Handle main phone numbers
+          this.phone_numbers[dataIndex]["countryCode"] = countryData.dialCode;
+          this.phone_numbers[dataIndex]["phoneNumber"] = iti.getNumber().replace(/^\+/, '');
+        } else if (dataIndex && dataIndex.startsWith('spouse_')) {
+          // Handle spouse emergency numbers
+          const spouseIndex = parseInt(dataIndex.split('_')[1]);
+          this.spouses[spouseIndex].emergency_country_code = countryData.dialCode;
+          this.spouses[spouseIndex].emergency_phone_number = iti.getNumber().replace(/^\+/, '');
+        } else if (dataIndex && dataIndex.startsWith('child_')) {
+          // Handle child emergency numbers
+          const childIndex = parseInt(dataIndex.split('_')[1]);
+          this.children[childIndex].emergency_country_code = countryData.dialCode;
+          this.children[childIndex].emergency_phone_number = iti.getNumber().replace(/^\+/, '');
+        }
+      };
+    },
     onSearch(query) {
       this.search = query
       this.offset = 0
@@ -852,14 +886,17 @@ $member->children->map(function ($child) {
       }
       this.children = this.children.filter(child => child.id != id);
     },
-    addSpouse() {
-      this.spouses.forEach(spouse => spouse.hidden = true);
-      this.spouses.push({
+    async addSpouse() {
+      await this.spouses.forEach(spouse => spouse.hidden = true);
+      await this.spouses.push({
         id: this.spouses.length + 1,
         name: "", cnic: "", date_of_birth: "", date_of_issue: "",
         validity: "", blood_group: "", profile_pic: "", hidden: false,
         emergency_number: "", emergency_country_code: "", emergency_phone_number: ""
       });
+
+      
+      await this.putCountryCodes();
     },
     convertToBase64(file) {
       return new Promise((resolve, reject) => {
@@ -897,12 +934,15 @@ $member->children->map(function ($child) {
     previous() {
       this.current_step--;
     },
-    addNewChild() {
-      this.children.push({
+    async addNewChild() {
+      await this.children.push({
         id: this.children.length + 1,
         name: "", cnic: "", date_of_birth: "", date_of_issue: "", validity: "", blood_group: "", profile_pic: "", child_card: "", hidden: false,
         emergency_number: "", emergency_country_code: "", emergency_phone_number: ""
       });
+
+      
+      await this.putCountryCodes();
     },
     numberToOrdinal(n) {
       const ordinals = ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh', 'Eighth', 'Ninth', 'Tenth'];
