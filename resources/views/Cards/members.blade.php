@@ -84,10 +84,60 @@ table {
       >
         Manage Members
       </h2>
-      <div style="display: flex; justify-content: space-between;">
+      <div style="display: flex; align-items: flex-start;">
         <input v-model="search" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" style="width: 25%; margin-bottom: 20px;" placeholder="Search">
+        <button type="button" 
+  style="
+    display: flex;
+    margin-left: 20px;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    padding: 0.625rem 1.25rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: none;
+    cursor: pointer;
+    outline: none;
+  "
+  @click="is_fuji = true"
+  :style="{ 'background-color': is_fuji ? '#1d4ed8' : '#e5e7eb', 'color': is_fuji ? '#fff' : '#374151' }">
+      
+
+  Fuji Prints
+</button>
+<button type="button" 
+  style="
+    display: flex;
+    margin-left: 5px;
+    align-items: center;
+    gap: 8px;
+    color: #374151;              /* Dark gray text */
+    background-color: #e5e7eb;   /* Gray-200 background */
+    font-weight: 500;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    padding: 0.625rem 1.25rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: none;
+    cursor: pointer;
+    outline: none;
+  "
+  @click="is_fuji = false"
+  :style="{ 'background-color': !is_fuji ? '#1d4ed8' : '#e5e7eb', 'color': !is_fuji ? '#fff' : '#374151' }">
+  
+  Borderless Prints
+</button>
+
+
+
       </div>
- 
+
+
+
       <table v-if="members.length > 0 && !is_fetching" class="w-full whitespace-no-wrap">
         <thead>
           <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
@@ -281,7 +331,8 @@ table {
           checked_members: [],
           checked_member_details: new Map(),
           debounceTimer: null,
-          openList: false
+          openList: false,
+          is_fuji: true
         }
       },
       created() {
@@ -325,11 +376,11 @@ table {
 
         },
         selectFront() {
-            const url = route('card.front', { members: JSON.parse(sessionStorage.checked_members) });
+            const url = route('card.front', { members: JSON.parse(sessionStorage.checked_members), fuji: this.is_fuji === false ? 1 : 0 });
             window.open(url, '_blank');
         },
         selectBack() {
-            const url = route("card.back", { members: JSON.parse(sessionStorage.checked_members) });
+            const url = route("card.back", { members: JSON.parse(sessionStorage.checked_members), fuji: this.is_fuji === false ? 1 : 0 });
             window.open(url, '_blank');
         },
         saveToSessionStorage(id, name) {

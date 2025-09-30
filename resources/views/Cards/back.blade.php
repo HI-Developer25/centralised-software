@@ -127,16 +127,21 @@
         /*padding: 0.5cm;*/
     }
 
-
+    .borderless {
+        clip-path: inset(20px 20px 20px 20px);
+    }
 </style>
 </head>
 <body onload="window.print();">
 <div class="container-fluid">
     <div class="row p-0 mx-2">
+            @php
+                $is_fuji = request()->fuji;
+            @endphp
             @foreach($member_collection as $member)
                             <div class="col-sm-6 p-0">
                             
-                            <div class="card card-custom mx-1 mt-3 card-custom-{{ $member['id'] }}" style="background-color: {{ $member['card_color'] }};">
+                            <div class="{{ (int)$is_fuji === 1 ? 'borderless' : '' }} card card-custom mx-1 mt-3 card-custom-{{ $member['id'] }}" style="background-color: {{ $member['card_color'] }};">
                             <style>
                                 .card-custom-{{ $member['id'] }}::before,
                                 .card-custom-{{ $member['id'] }}::after {

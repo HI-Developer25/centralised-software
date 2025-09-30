@@ -149,14 +149,21 @@ td h6{
                 padding: 0.5cm;
             }
 
+            .borderless {
+                clip-path: inset(20px 20px 20px 20px);
+            }
+
     </style>
 </head>
 <body onload="window.print();">
     <div class="container-fluid">
     <div class="row p-0 mx-2">
+        @php
+            $is_fuji = request()->fuji;
+        @endphp
         @foreach($member_collection as $member)
                 <div class="col-sm-6 p-0">
-                    <div class="card card-custom-front card-custom-front-{{ $member["id"] }} mx-1 mt-3" style="background-color: {{ $member["card_color"] }}; position: relative;">
+                    <div class="{{ (int)$is_fuji === 1 ? 'borderless' : '' }} card card-custom-front card-custom-front-{{ $member["id"] }} mx-1 mt-3" style="background-color: {{ $member["card_color"] }}; position: relative;">
                                 <style>
                                     .card-custom-front-{{ $member["id"] }}::before,
                                     .card-custom-front-{{ $member["id"] }}::after {
@@ -172,7 +179,7 @@ td h6{
                                     <tr>
                                         @if($member["card_type"] === "Provisional Membership")
                                             <td style="width: 65%;">
-                                                <img src="{{ asset("/assets/img/card_logo_.png") }}" alt="Card Logo" class="img-fluid" style="width: 70%; margin-top:-20px; position: relative; left: 20px;">
+                                                <img src="{{ asset("/assets/img/card_logo_.png") }}" alt="Card Logo" class="img-fluid" style="width: 70%; margin-top:-20px; position: relative; {{ (int)$is_fuji === 1 ? 'left: 0px' : 'left: 20px' }} ">
                                             </td>
                                             <td style="width: 35%; text-align: right;">
                                                 <h6>{{ $member["card_type"] }}</h6>
