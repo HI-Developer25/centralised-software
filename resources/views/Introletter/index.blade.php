@@ -43,7 +43,7 @@
             <td class="px-4 py-3 text-sm" v-text="introletter.children"></td>
             <td class="px-4 py-3 text-sm" v-text="introletter.club.club_name"></td>
             <td class="px-4 py-3 text-sm" v-text="`${introletter.duration.months} Months`"></td>
-            <td class="px-4 py-3 text-sm" v-text="introletter.created_at"></td>
+            <td class="px-4 py-3 text-sm" v-text="introletter.issue_date"></td>
             <td class="px-4 py-3">
               <div class="flex items-center space-x-4 text-sm">
                 <button @click="deleteIntroletter(introletter.id)" class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray" aria-label="Delete">

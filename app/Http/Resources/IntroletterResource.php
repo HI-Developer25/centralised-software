@@ -23,7 +23,8 @@ class IntroletterResource extends JsonResource
             "children" => $this->children,
             "club" => $this->club,
             "duration" => $this->duration,
-            "created_at" => $this->created_at->format("d-M-Y")
+            "created_at" => $this->created_at->format("d-M-Y"),
+            "issue_date" => Carbon::parse($this->issue_date)->format("d-M-Y")
         ];
     }
 }
