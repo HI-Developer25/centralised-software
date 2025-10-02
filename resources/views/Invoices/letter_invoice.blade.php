@@ -162,7 +162,7 @@ h2{
             <td style="width: 20%;">To the reciprocal club</td>
             <td colspan="4">{{ $introletter->club->club_name }}</td>
             <td>Issue Date</td>
-            <td><?php echo date('d M Y', strtotime($introletter->created_at)); ?></td>
+            <td><?php echo date('d M Y', strtotime($introletter->issue_date)); ?></td>
         </tr> 
         <tr>
             <td>Member's name</td>
@@ -170,7 +170,7 @@ h2{
             <td>Membership No:</td>
             <td>{{ $introletter->member->membership_number }}</td>
             <td>Expiry Date</td>
-            <td><?php echo date('d M Y', strtotime($introletter->created_at->addMonths($introletter->duration->months))); ?></td>
+            <td><?php echo date('d M Y', strtotime($introletter->issue_date->addMonths($introletter->duration->months))); ?></td>
         </tr> 
         
     </table>
