@@ -58,12 +58,14 @@ class IntroletterController extends Controller
         $member = Member::firstWhere("membership_number", $request->membership_number);
         $children = $request->children;
         $spouse = $request->spouse;
+        $issue_date = $request->issue_date;
 
         $member->introletter()->create([
             "spouse" => $spouse,
             "children" => $children,
             "club_id" => $club->id,
             "duration_id" => $duration->id, 
+            "issue_date" => $issue_date
         ]);
     }
 }
