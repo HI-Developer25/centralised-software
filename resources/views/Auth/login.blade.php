@@ -212,7 +212,7 @@
                         const otp = result.value;
                         this.verifyOtp(otp);
                     } else {
-                      this.fai();
+                      this.fails();
                     }
                 });
               } catch(e) {
